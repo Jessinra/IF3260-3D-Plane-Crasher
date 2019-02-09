@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "Color.hpp"
+#include "Plane.hpp"
 #include "Line.hpp"
 #include "Pixel.hpp"
 
@@ -17,26 +18,21 @@ class Object
 
   protected:
     Pixel position;
-    vector<Line> lines;
-    int width;
-    int height;
+    int nplane;
+    vector<Plane> planes;
 
   public:
     Object();
     Object(float, float, std::string);
 
-    bool outOfWindow(int, int) const;
-    void reverseHorizontal();
-
     void setPos(Pixel); // change setPos to void
     void setPos(float, float);
+    void setNPlane(int);
 
-    int getSingleColor() const;
-    vector<Line> getLines() const;
+    vector<Plane> getPlanes() const;
     Pixel getPos() const;
-    int getWidth() const;
-    int getHeight() const;
-    const vector<Line> &getRefLines() const;
+    int getNPlane() const;
+    const vector<Plane> &getRefPlanes() const;
     const Pixel &getRefPos() const;
 };
 

@@ -26,6 +26,14 @@ Pixel Line::getEndPixel() const
     return this->endPixel;
 }
 
+unsigned int  Line::getStartColor() const {
+    return this->startPixel.getColor();
+}
+
+unsigned int Line::getEndColor() const {
+    return this->endPixel.getColor();
+}
+
 const Pixel & Line::getRefStartPixel() const{
     return startPixel;
 }

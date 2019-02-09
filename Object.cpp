@@ -22,54 +22,32 @@ Object::Object(float x, float y, std::string filename)
     int nline;
     int xStart, yStart, xEnd, yEnd;
     int xMin, xMax, yMin, yMax;
+    int colorPlane;
     unsigned int colorStart, colorEnd;
 
-    inFile >> nline;
-    for (int i = 0; i < nline; ++i)
+    inFile >> nplane;
+    for (int i = 0; i < nplane; ++i)
     {
-        inFile >> dec >> xStart;
-        inFile >> yStart;
-        inFile >> hex >> colorStart;
-        inFile >> dec >> xEnd;
-        inFile >> yEnd;
-        inFile >> hex >> colorEnd;
+        inFile >> nline;
+        inFile >> hex >> colorPlane;
+        vector<Line> lines;
+        for (int j = 0; j < nline; ++j) {
+            inFile >> dec >> xStart;
+            inFile >> yStart;
+            inFile >> hex >> colorStart;
+            inFile >> dec >> xEnd;
+            inFile >> yEnd;
+            inFile >> hex >> colorEnd;
 
-        if (i == 0)
-        {
-            xMin = min(xStart, xEnd);
-            xMax = max(xStart, xEnd);
-            yMin = min(yStart, yEnd);
-            yMax = max(yStart, yEnd);
+            Pixel startpx = Pixel(xStart, yStart, colorStart);
+            Pixel endpx = Pixel(xEnd, yEnd, colorEnd);
+            Line line = Line(startpx, endpx);
+            lines.push_back(line);
         }
-        else
-        {
-            xMin = min(yMin, min(xStart, xEnd));
-            xMax = max(xMax, max(xStart, xEnd));
-            yMin = min(yMin, min(yStart, yEnd));
-            yMax = max(yMax, max(yStart, yEnd));
-        }
-
-        Pixel startpx = Pixel(xStart, yStart, colorStart);
-        Pixel endpx = Pixel(xEnd, yEnd, colorEnd);
-        Line line = Line(startpx, endpx);
-        lines.push_back(line);
+        Plane plane = Plane(x, y, nline, lines, colorPlane);
+        planes.push_back(plane);
     }
-
-    height = yMax + 1;
-    width = xMax + 1;
     inFile.close();
-}
-
-bool Object::outOfWindow(int h, int w) const
-{
-    return (this->position.getX() >= w || this->position.getY() >= h || this->position.getX() <= -width || this->position.getY() <= -height);
-}
-
-void Object::reverseHorizontal(){
-    for(Line &line : lines){
-        line.setStartPixel(Pixel(width - line.getStartPixel().getX() - 1, line.getStartPixel().getY(), line.getStartPixel().getColor()));
-        line.setEndPixel(Pixel(width - line.getEndPixel().getX() - 1, line.getEndPixel().getY(), line.getEndPixel().getColor()));
-    }
 }
 
 void Object::setPos(Pixel position)
@@ -82,24 +60,14 @@ void Object::setPos(float x, float y)
     this->position = Pixel(x, y);
 }
 
-int Object::getSingleColor() const
+void Object::setNPlane(int nplane)
 {
-    return this->getLines()[0].getStartPixel().getColor();
+    this->nplane = nplane;
 }
 
-vector<Line> Object::getLines() const
+vector<Plane> Object::getPlanes() const
 {
-    return lines;
-}
-
-int Object::getWidth() const
-{
-    return width;
-}
-
-int Object::getHeight() const
-{
-    return height;
+    return planes;
 }
 
 Pixel Object::getPos() const
@@ -107,9 +75,14 @@ Pixel Object::getPos() const
     return this->position;
 }
 
-const vector<Line> &Object::getRefLines() const
+int Object::getNPlane() const
 {
-    return lines;
+    return this->nplane;
+}
+
+const vector<Plane> &Object::getRefPlanes() const
+{
+    return planes;
 }
 
 const Pixel &Object::getRefPos() const

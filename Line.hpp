@@ -23,6 +23,8 @@ class Line
     void setEndPixel(Pixel);
     Pixel getStartPixel() const;
     Pixel getEndPixel() const;
+    unsigned int getStartColor() const;
+    unsigned int getEndColor() const;
     const Pixel &getRefStartPixel() const;
     const Pixel &getRefEndPixel() const;
 };
