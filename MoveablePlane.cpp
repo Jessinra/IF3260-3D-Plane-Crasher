@@ -1,14 +1,14 @@
 
 #include "MoveablePlane.hpp"
 
-MoveablePlane::MoveablePlane(float x, float y, int nline, vector<Line> lines, int color, int priority) : Plane(x, y, nline, lines, color, priority)
+MoveablePlane::MoveablePlane(float x, float y, vector<Line> lines, int color, int priority) : Plane(x, y, lines, color, priority)
 {
     this->dx = 0;
     this->dy = 0;
     this->speed = 1;
 }
 
-MoveablePlane::MoveablePlane(float x, float y, float dx, float dy, float speed, int nline, vector<Line> lines, int color, int priority) : Plane(x, y, nline, lines, color, priority)
+MoveablePlane::MoveablePlane(float x, float y, float dx, float dy, float speed, vector<Line> lines, int color, int priority) : Plane(x, y, lines, color, priority)
 {
     float distance = sqrt(dx * dx + dy * dy);
     this->dx = 0;

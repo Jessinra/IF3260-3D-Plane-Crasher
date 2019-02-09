@@ -28,8 +28,8 @@ class Object
     void setPos(float x, float y);
     void setNPlane(int nPlane);
 
-    void setWidth();  // TODO
-    void setHeight(); // TODO
+    void setWidth();
+    void setHeight();
 
     vector<Plane*> getPlanes() const;
     Pixel getPos() const;

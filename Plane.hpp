@@ -14,13 +14,13 @@ class Plane
 
     int width;
     int height;
-    int nline;
+
     int color;
     int priority;
 
   public:
     Plane();
-    Plane(float x, float y, int nline, vector<Line> lines, int color, int priority);
+    Plane(float x, float y, vector<Line> lines, int color, int priority);
 
     bool outOfWindow(int height, int width) const;
     void reverseHorizontal();
@@ -30,8 +30,9 @@ class Plane
     void setNLine(int nline);
     void setColor(int color);
     void setPriority(int priority);
+    void setWidth();
+    void setHeight();
 
-    int getNLine() const;
     int getColor() const;
     int getPriority() const;
     int getWidth() const;

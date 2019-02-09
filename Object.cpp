@@ -49,9 +49,13 @@ Object::Object(float x, float y, std::string filename)
             lines.push_back(line);
         }
 
-        Plane *plane = new MoveablePlane(x, y, nLine, lines, planeColor, priority);
-        planes.push_back(plane);
+        Plane *plane = new MoveablePlane(x, y, lines, planeColor, priority);
+        this->planes.push_back(plane);
     }
+
+    this->setHeight();
+    this->setWidth();
+
     inFile.close();
 }
 
@@ -72,12 +76,42 @@ void Object::setNPlane(int nPlane)
 
 void Object::setWidth()
 {
-    // TODO : calculate total width of object
+    float xStart, xEnd;
+    float xMin = 9999999; 
+    float xMax = -9999999;
+
+    for (Plane *plane: this->getPlanes())
+    {
+        for (Line line : plane->getLines())
+        {
+            xStart = line.getStartPixel().getX();
+            xEnd = line.getEndPixel().getX();
+
+            xMin = min(xMin, min(xStart, xEnd));
+            xMax = max(xMax, max(xStart, xEnd));
+        }
+    }
+    this->width = xMax - xMin + 1;
 }
 
 void Object::setHeight()
 {
-    // TODO : calculate total height of object
+    float yStart, yEnd;
+    float yMin = 9999999; 
+    float yMax = -9999999;
+
+    for (Plane *plane: this->getPlanes())
+    {
+        for (Line line : plane->getLines())
+        {
+            yStart = line.getStartPixel().getY();
+            yEnd = line.getEndPixel().getY();
+
+            yMin = min(yMin, min(yStart, yEnd));
+            yMax = max(yMax, max(yStart, yEnd));
+        }
+    }
+    this->height = yMax - yMin + 1;
 }
 
 vector<Plane *> Object::getPlanes() const

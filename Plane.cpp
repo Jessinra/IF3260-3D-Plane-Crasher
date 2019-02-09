@@ -5,41 +5,15 @@ Plane::Plane()
 {
 }
 
-Plane::Plane(float x, float y, int nline, vector<Line> lines, int color, int priority)
+Plane::Plane(float x, float y, vector<Line> lines, int color, int priority)
 {
-    setPos(x, y);
+    this->setPos(x, y);
     this->lines = lines;
     this->color = color;
-    this->nline = nline;
     this->priority = priority;
 
-    float xStart, yStart, xEnd, yEnd;
-    float xMin, xMax, yMin, yMax;
-
-    for (int i = 0; i < this->nline; ++i)
-    {
-        xStart = lines[i].getStartPixel().getX();
-        yStart = lines[i].getStartPixel().getY();
-        xEnd = lines[i].getEndPixel().getX();
-        yEnd = lines[i].getEndPixel().getY();
-
-        if (i == 0)
-        {
-            xMin = min(xStart, xEnd);
-            xMax = max(xStart, xEnd);
-            yMin = min(yStart, yEnd);
-            yMax = max(yStart, yEnd);
-        }
-        else
-        {
-            xMin = min(yMin, min(xStart, xEnd));
-            xMax = max(xMax, max(xStart, xEnd));
-            yMin = min(yMin, min(yStart, yEnd));
-            yMax = max(yMax, max(yStart, yEnd));
-        }
-    }
-    this->height = yMax + 1;
-    this->width = xMax + 1;
+    this->setHeight();
+    this->setWidth();
 }
 
 bool Plane::outOfWindow(int height, int width) const
@@ -66,11 +40,6 @@ void Plane::setPos(float x, float y)
     this->position = Pixel(x, y);
 }
 
-void Plane::setNLine(int nline)
-{
-    this->nline = nline;
-}
-
 void Plane::setColor(int color)
 {
     this->color = color;
@@ -81,9 +50,40 @@ void Plane::setPriority(int priority)
     this->priority = priority;
 }
 
-int Plane::getNLine() const
+void Plane::setWidth()
 {
-    return this->nline;
+    float xStart, xEnd;
+    float xMin = 9999999; 
+    float xMax = -9999999;
+
+    for (Line line : this->lines)
+    {
+        xStart = line.getStartPixel().getX();
+        xEnd = line.getEndPixel().getX();
+
+        xMin = min(xMin, min(xStart, xEnd));
+        xMax = max(xMax, max(xStart, xEnd));
+    }
+
+    this->width = xMax - xMin + 1;
+}
+
+void Plane::setHeight()
+{
+    float yStart, yEnd;
+    float yMin = 9999999; 
+    float yMax = -9999999;
+
+    for (Line line : this->lines)
+    {
+        yStart = line.getStartPixel().getY();
+        yEnd = line.getEndPixel().getY();
+
+        yMin = min(yMin, min(yStart, yEnd));
+        yMax = max(yMax, max(yStart, yEnd));
+    }
+
+    this->height = yMax - yMin + 1;
 }
 
 int Plane::getColor() const

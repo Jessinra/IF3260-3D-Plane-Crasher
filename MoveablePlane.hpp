@@ -11,8 +11,8 @@ protected:
   float dx, dy;
 
 public:
-  MoveablePlane(float x, float y, int nline, vector<Line> lines, int color, int priority);
-  MoveablePlane(float x, float y, float dx, float dy, float speed, int nline, vector<Line> lines, int color, int priority);
+  MoveablePlane(float x, float y, vector<Line> lines, int color, int priority);
+  MoveablePlane(float x, float y, float dx, float dy, float speed, vector<Line> lines, int color, int priority);
   MoveablePlane(const Plane &plane);
   MoveablePlane(float dx, float dy, float speed, const Plane &plane);
 
