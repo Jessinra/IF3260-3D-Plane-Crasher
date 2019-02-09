@@ -7,21 +7,21 @@ Pixel::Pixel()
 {
     this->x = 0;
     this->y = 0;
-    col = Color::BLACK;
+    this->color = Color::BLACK;
 }
 
 Pixel::Pixel(float x, float y)
 {
     this->x = x;
     this->y = y;
-    col = Color::WHITE;
+    this->color = Color::WHITE;
 }
 
 Pixel::Pixel(float x, float y, unsigned int color)
 {
     this->x = x;
     this->y = y;
-    col = color;
+    this->color = color;
 }
 
 float Pixel::getX() const
@@ -36,7 +36,7 @@ float Pixel::getY() const
 
 unsigned int Pixel::getColor() const
 {
-    return this->col;
+    return this->color;
 }
 
 void Pixel::setX(float x)
@@ -57,16 +57,16 @@ void Pixel::setPos(float x, float y)
 
 void Pixel::setColor(unsigned int color)
 {
-    this->col = color;
+    this->color = color;
 }
 
-Pixel Pixel::rotation(float pointX, float pointY, float theta)
+Pixel Pixel::rotation(float pivotX, float pivotY, float theta)
 {
     int resultX = this->x;
     int resultY = this->y;
 
-    resultX -= pointX;
-    resultY -= pointY;
+    resultX -= pivotX;
+    resultY -= pivotY;
 
     float sinTheta = sin(theta * PI / 180);
     float cosTheta = cos(theta * PI / 180);
@@ -74,16 +74,16 @@ Pixel Pixel::rotation(float pointX, float pointY, float theta)
     float xnew = resultX * cosTheta - resultY * sinTheta;
     float ynew = resultX * sinTheta + resultY * cosTheta;
 
-    resultX = xnew + pointX;
-    resultY = ynew + pointY;
+    resultX = xnew + pivotX;
+    resultY = ynew + pivotY;
 
-    return Pixel(resultX, resultY, col);
+    return Pixel(resultX, resultY, this->color);
 }
 
-Pixel Pixel::dilated(float pointX, float pointY, float k)
+Pixel Pixel::dilated(float pivotX, float pivotY, float scalingConstant)
 {
-    int resultX = k * (x - pointX) + pointX;
-    int resultY = k * (y - pointY) + pointY;
+    int resultX = scalingConstant * (x - pivotX) + pivotX;
+    int resultY = scalingConstant * (y - pivotY) + pivotY;
 
-    return Pixel(resultX, resultY, col);
+    return Pixel(resultX, resultY, this->color);
 }

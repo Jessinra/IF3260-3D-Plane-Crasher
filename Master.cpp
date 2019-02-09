@@ -128,14 +128,19 @@ void Master::copyColor(int xTarget, int yTarget, int xSource, int ySource)
         *((unsigned int *)(fbp + location1)) = *((unsigned int *)fbp + location2);
     }
 }
-    
-void Master::assignColorBuffer(vector<vector<unsigned int> > & buffer, int x, int y, unsigned int color){
-    if (y < buffer.size() && x < buffer[0].size()){
+
+void Master::assignColorBuffer(vector<vector<unsigned int>> &buffer, int x, int y, unsigned int color)
+{
+    if (y < buffer.size() && x < buffer[0].size())
+    {
         buffer[y][x] = color;
     }
 }
 
-void Master::clearWindow() { memset(fbp, 0, (yend * ymultiplier + yadder)); }
+void Master::clearWindow()
+{
+    memset(fbp, 0, (yend * ymultiplier + yadder));
+}
 
 void Master::clearWindow(unsigned int color)
 {
@@ -299,8 +304,8 @@ void Master::drawLine(int positionX, int positionY, const Line &line)
     }
 }
 
-
-void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line & line){
+void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line &line)
+{
     // Bresenham's line algorithm with gradient coloring
 
     // Position section
@@ -334,9 +339,12 @@ void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line & line){
     float green = (colorStart & 0xff00) >> 8;
     float blue = colorStart & 0xff;
 
-    if (xStart == xEnd){
-        if (xStart >= 0 && xStart < buffer.size()){
-            for (int y = yStart; y != yEnd + yStep; y += yStep){
+    if (xStart == xEnd)
+    {
+        if (xStart >= 0 && xStart < buffer.size())
+        {
+            for (int y = yStart; y != yEnd + yStep; y += yStep)
+            {
                 unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
                 assignColorBuffer(buffer, xStart, y, color);
 
@@ -348,17 +356,19 @@ void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line & line){
         return;
     }
 
-    if(deltaY <= deltaX){
+    if (deltaY <= deltaX)
+    {
         int y = yStart;
         const float deltaErr = fabs(deltaY / deltaX);
         float error = 0;
-        for (int x = xStart; x != xEnd + xStep;x += xStep)
+        for (int x = xStart; x != xEnd + xStep; x += xStep)
         {
             unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
             assignColorBuffer(buffer, x, y, color);
 
             error += deltaErr;
-            if (error >= 0.5){
+            if (error >= 0.5)
+            {
                 y += yStep;
                 error -= 1;
             }
@@ -368,17 +378,19 @@ void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line & line){
             blue += blueStep;
         }
     }
-    else{
+    else
+    {
         int x = xStart;
         const float deltaErr = fabs(deltaX / deltaY);
         float error = 0;
-        for (int y = yStart; y != yEnd + yStep;y += yStep)
+        for (int y = yStart; y != yEnd + yStep; y += yStep)
         {
             unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
             assignColorBuffer(buffer, x, y, color);
 
             error += deltaErr;
-            if (error >= 0.5){
+            if (error >= 0.5)
+            {
                 x += xStep;
                 error -= 1;
             }
@@ -390,72 +402,99 @@ void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line & line){
     }
 }
 
-void Master::drawObject(const Object &object)
+void Master::drawPlane(const Plane &plane)
 {
-    int positionX = object.getRefPos().getX();
-    int positionY = object.getRefPos().getY();
-    for (const Line &line : object.getRefLines())
+    int positionX = plane.getRefPos().getX();
+    int positionY = plane.getRefPos().getY();
+    for (const Line &line : plane.getRefLines())
     {
         drawLine(positionX, positionY, line);
     }
 }
 
-void Master::drawSolidObject(const Object &object)
+void Master::drawSolidPlane(const Plane &plane)
 {
-    int positionX = object.getRefPos().getX();
-    int positionY = object.getRefPos().getY();
+    int positionX = plane.getRefPos().getX();
+    int positionY = plane.getRefPos().getY();
 
-    vector<Line> objectFillerLines = this->objectFiller.getObjectFillerLines(object);
+    vector<Line> planeFillerLines = this->planeFiller.getPlaneFillerLines(plane);
 
-    for (const Line &line : objectFillerLines)
+    for (const Line &line : planeFillerLines)
     {
         drawLine(positionX, positionY, line);
     }
 }
 
-void Master::drawSolidObject2(const Object &obj){
-    int h = obj.getHeight();
-    int w = obj.getWidth();
+void Master::drawSolidPlane2(const Plane &plane)
+{
+    int height = plane.getHeight();
+    int width = plane.getWidth();
     const unsigned int back = 0;
     unsigned int color = back;
-    vector<vector<unsigned int> > vir(h, vector<unsigned int>(w, back));
+    vector<vector<unsigned int>> vir(height, vector<unsigned int>(width, back));
     // draw line
-    for(const Line &line : obj.getRefLines()){
+    for (const Line &line : plane.getRefLines())
+    {
         drawLine(vir, line);
     }
 
     // filling top to down
-    for(int i=1;i<h-1;++i){
+    for (int i = 1; i < height - 1; ++i)
+    {
         color = back;
-        for(int j=0;j<w;++j){
-            if(vir[i][j] != back){
+        for (int j = 0; j < width; ++j)
+        {
+            if (vir[i][j] != back)
+            {
                 /* Anomaly check start */
                 // top check;
                 bool top = false;
-                for(int k=-1;k<=1;++k){
-                    if(j+k >= 0 && j+k < w && vir[i-1][j+k] != back){
+                for (int k = -1; k <= 1; ++k)
+                {
+                    if (j + k >= 0 && j + k < width && vir[i - 1][j + k] != back)
+                    {
                         top = true;
                         break;
                     }
                 }
                 // botom check
                 bool bot = false;
-                for(int k=-1;k<=1;++k){
-                    if(j+k >= 0 && j+k < w && vir[i+1][j+k] != back){
+                for (int k = -1; k <= 1; ++k)
+                {
+                    if (j + k >= 0 && j + k < width && vir[i + 1][j + k] != back)
+                    {
                         bot = true;
                         break;
                     }
                 }
                 /* Anomaly check end */
-                if(top && bot){
-                    color = color == back? vir[i][j] : back;
+                if (top && bot)
+                {
+                    color = color == back ? vir[i][j] : back;
                 }
             }
-            else{
+            else
+            {
                 vir[i][j] = color;
             }
         }
     }
 
-    draw(obj.getRefPos().getX(), obj.getRefPos().getY(), vir);
+    draw(plane.getRefPos().getX(), plane.getRefPos().getY(), vir);
+}
+
+void Master::drawObject(const Object &object){
+
+    for (const Plane &plane : object.getRefPlanes())
+    {
+        drawPlane(plane);
+    }
+}
+
+void Master::drawSolidObject(const Object &object){
+
+    for (const Plane &plane : object.getRefPlanes())
+    {
+        drawSolidPlane(plane);
+    }
 }

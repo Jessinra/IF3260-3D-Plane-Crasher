@@ -7,26 +7,26 @@
 
 class MoveableObject : public Object
 {
-  protected:
-    float speed;
-    float dx, dy;
+protected:
+  float speed;
+  float dx, dy;
 
-  public:
-    MoveableObject(float, float, const std::string &);
-    MoveableObject(float, float, float, float, float, const std::string &);
-    MoveableObject(const Object &);
-    MoveableObject(float, float, float, const Object &);
+public:
+  MoveableObject(float x, float y, const std::string &filename);
+  MoveableObject(float x, float y, float dx, float dy, float speed, const std::string &filename);
+  MoveableObject(const Object &obj);
+  MoveableObject(float dx, float dy, float speed, const Object &obj);
 
-    void move();
-    void selfRotation(float, float, float);
-    void selfDilated(float, float, float);
+  void setVector(float dx, float dy);
+  void setSpeed(float speed);
 
-    void setVector(float, float);
-    void setSpeed(float);
+  float getDx() const;
+  float getDy() const;
+  float getSpeed() const;
 
-    float getDx() const;
-    float getDy() const;
-    float getSpeed() const;
+  void move();
+  void selfRotation(float x, float y, float theta); // TODO
+  void selfDilated(float x, float y, float k); // TODO
 };
 
 #endif

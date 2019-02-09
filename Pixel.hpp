@@ -10,23 +10,24 @@ class Pixel
   private:
     float x;
     float y;
-    unsigned int col;
+    unsigned int color;
 
   public:
     Pixel();
-    Pixel(float, float);
-    Pixel(float, float, unsigned int);
+    Pixel(float x, float y);
+    Pixel(float x, float y, unsigned int color);
 
     float getX() const;
     float getY() const;
     unsigned int getColor() const;
 
-    void setX(float);
-    void setY(float);
-    void setPos(float, float);
-    void setColor(unsigned int);
-    Pixel rotation(float, float, float);
-    Pixel dilated(float, float, float);
+    void setX(float x);
+    void setY(float y);
+    void setPos(float x, float y);
+    void setColor(unsigned int color);
+    
+    Pixel rotation(float pivotX, float pivotY, float theta);
+    Pixel dilated(float pivotX, float pivotY, float scalingConstant);
 };
 
 #endif

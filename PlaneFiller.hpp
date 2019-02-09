@@ -1,12 +1,12 @@
-#ifndef OBJECT_FILLER_HPP
-#define OBJECT_FILLER_HPP
+#ifndef PLANE_FILLER_HPP
+#define PLANE_FILLER_HPP
 
 #include <cmath>
 #include <cstdio>
 #include <vector>
 
 #include "Line.hpp"
-#include "Object.hpp"
+#include "Plane.hpp"
 #include "Pixel.hpp"
 
 /* changable */
@@ -30,12 +30,11 @@ class EdgeTableTuple
   // The edge table (ET) with edges entries sorted
   // in increasing y and x of the lower end
 public:
-  // int countEdgeBucket;             // no. of edgebuckets
-  vector<EdgeBucket> buckets; // max vertices (??)
+  vector<EdgeBucket> buckets;
   EdgeTableTuple();
 };
 
-class ObjectFiller
+class PlaneFiller
 {
 private:
   vector<EdgeTableTuple> EdgeTable;
@@ -45,15 +44,15 @@ private:
   void insertionSort(EdgeTableTuple &ett);
 
   void initEdgeTable();
-  void insertLinesToEdgeTable(const Object &object);
+  void insertLinesToEdgeTable(const Plane &plane);
   void storeEdgeInTable(int x1, int y1, int x2, int y2);
   void storeEdgeInTuple(EdgeTableTuple &receiver, int yMax, int xMin, float inverseGradient);
   void removeEdgeByYmax(EdgeTableTuple &Tuple, int currentY);
   void updateXMin(EdgeTableTuple &Tuple);
 
 public:
-  ObjectFiller();
-  vector<Line> getObjectFillerLines(const Object &);
+  PlaneFiller();
+  vector<Line> getPlaneFillerLines(const Plane &);
 };
 
 #endif

@@ -1,22 +1,23 @@
-#include "ObjectFiller.hpp"
+#include "PlaneFiller.hpp"
 
-
-EdgeBucket::EdgeBucket(){}
-EdgeBucket::EdgeBucket(int _yMax, float _xMin, float _inverseGradient){
+EdgeBucket::EdgeBucket() {}
+EdgeBucket::EdgeBucket(int _yMax, float _xMin, float _inverseGradient)
+{
     yMax = _yMax;
     xMin = _xMin;
     inverseGradient = _inverseGradient;
 }
 
-EdgeTableTuple::EdgeTableTuple(){
+EdgeTableTuple::EdgeTableTuple()
+{
 }
 
-ObjectFiller::ObjectFiller()
+PlaneFiller::PlaneFiller()
 {
     initEdgeTable();
 }
 
-void ObjectFiller::insertionSort(EdgeTableTuple &ett)
+void PlaneFiller::insertionSort(EdgeTableTuple &ett)
 {
     int i, j;
     EdgeBucket temp;
@@ -41,22 +42,17 @@ void ObjectFiller::insertionSort(EdgeTableTuple &ett)
     }
 }
 
-void ObjectFiller::initEdgeTable()
+void PlaneFiller::initEdgeTable()
 {
-    // for (int i = 0; i < maxHeight; i++)
-    // {
-    //     EdgeTable[i].countEdgeBucket = 0;
-    // }
-
-    // ActiveEdgeTuple.countEdgeBucket = 0;
-
     EdgeTable.clear();
     ActiveEdgeTuple = EdgeTableTuple();
 }
 
-void ObjectFiller::insertLinesToEdgeTable(const Object &object){
+void PlaneFiller::insertLinesToEdgeTable(const Plane &plane)
+{
     int x1, x2, y1, y2;
-    for(const Line &line : object.getRefLines()){
+    for (const Line &line : plane.getRefLines())
+    {
         x1 = (int)line.getStartPixel().getX();
         x2 = (int)line.getEndPixel().getX();
         y1 = (int)line.getStartPixel().getY();
@@ -66,16 +62,18 @@ void ObjectFiller::insertLinesToEdgeTable(const Object &object){
     }
 }
 
-void ObjectFiller::storeEdgeInTable(int x1, int y1, int x2, int y2)
+void PlaneFiller::storeEdgeInTable(int x1, int y1, int x2, int y2)
 {
     float gradient, inverseGradient;
     int yMax, xMin, yMin;
 
     // is Vertical Line
-    if (x2 == x1){
+    if (x2 == x1)
+    {
         inverseGradient = 0.000000;
     }
-    else{
+    else
+    {
         gradient = ((float)(y2 - y1)) / ((float)(x2 - x1));
 
         // horizontal lines are not stored in edge table (no inverseGradient)
@@ -85,22 +83,26 @@ void ObjectFiller::storeEdgeInTable(int x1, int y1, int x2, int y2)
         inverseGradient = (float)1.0 / gradient;
     }
 
-    if (y1 > y2){
+    if (y1 > y2)
+    {
         yMax = y1;
         yMin = y2;
         xMin = x2;
     }
-    else{
+    else
+    {
         yMax = y2;
         yMin = y1;
         xMin = x1;
     }
 
-    if(yMin < 0) std::cerr<<"anjing eh "<<yMin<<std::endl;
+    if (yMin < 0)
+        std::cerr << "anjing eh " << yMin << std::endl;
     storeEdgeInTuple(EdgeTable[yMin], yMax, xMin, inverseGradient);
 }
 
-void ObjectFiller::storeEdgeInTuple(EdgeTableTuple &receiver, int yMax, int xMin, float inverseGradient){
+void PlaneFiller::storeEdgeInTuple(EdgeTableTuple &receiver, int yMax, int xMin, float inverseGradient)
+{
     // both used for edgetable and active edge table..
     // The edge tuple sorted in increasing yMax and x of the lower end.
     receiver.buckets.push_back(EdgeBucket(yMax, xMin, inverseGradient));
@@ -109,9 +111,12 @@ void ObjectFiller::storeEdgeInTuple(EdgeTableTuple &receiver, int yMax, int xMin
     insertionSort(receiver);
 }
 
-void ObjectFiller::removeEdgeByYmax(EdgeTableTuple &Tuple, int currentY){
-    for (int i = 0; i < Tuple.buckets.size(); i++){
-        if (Tuple.buckets[i].yMax == currentY){
+void PlaneFiller::removeEdgeByYmax(EdgeTableTuple &Tuple, int currentY)
+{
+    for (int i = 0; i < Tuple.buckets.size(); i++)
+    {
+        if (Tuple.buckets[i].yMax == currentY)
+        {
             vector<EdgeBucket> &tmp = Tuple.buckets;
             tmp.erase(tmp.begin() + i);
             i--;
@@ -119,14 +124,16 @@ void ObjectFiller::removeEdgeByYmax(EdgeTableTuple &Tuple, int currentY){
     }
 }
 
-void ObjectFiller::updateXMin(EdgeTableTuple &Tuple){
-    for (int i = 0; i < Tuple.buckets.size(); i++){
+void PlaneFiller::updateXMin(EdgeTableTuple &Tuple)
+{
+    for (int i = 0; i < Tuple.buckets.size(); i++)
+    {
         // (Tuple->buckets[i]).xMin = (Tuple->buckets[i]).xMin + (Tuple->buckets[i]).inverseGradient;
         Tuple.buckets[i].xMin += Tuple.buckets[i].inverseGradient;
     }
 }
 
-vector<Line> ObjectFiller::getObjectFillerLines(const Object &object)
+vector<Line> PlaneFiller::getPlaneFillerLines(const Plane &plane)
 {
     /* Follow the following rules: 
 	1. Horizontal edges: Do not include in edge table 
@@ -140,18 +147,18 @@ vector<Line> ObjectFiller::getObjectFillerLines(const Object &object)
 
     // Initialize EdgeTable
     initEdgeTable();
-    EdgeTable.resize(object.getHeight());
-    insertLinesToEdgeTable(object);
+    EdgeTable.resize(plane.getHeight());
+    insertLinesToEdgeTable(plane);
 
-    // Get object color
-    const int sampleColor = object.getSingleColor();
+    // Get plane color
+    const int sampleColor = plane.getColor();
 
     // Initialize drawing position
-    int positionY = object.getRefPos().getY();
-    int positionX = object.getRefPos().getX();
+    int positionY = plane.getRefPos().getY();
+    int positionX = plane.getRefPos().getX();
 
     // Start from yMin 0 Repeat until last yMin:
-    for (int i = 0; i < object.getHeight(); i++) //4. Increment y by 1 (next scan line)
+    for (int i = 0; i < plane.getHeight(); i++) //4. Increment y by 1 (next scan line)
     {
         // 1. Move from EdgeTuple bucket y to the
         // ActiveEdgeTuple those edges whose ymin = y (entering edges)

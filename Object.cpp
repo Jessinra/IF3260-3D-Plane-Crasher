@@ -19,21 +19,23 @@ Object::Object(float x, float y, std::string filename)
         exit(1);
     }
 
-    int nline;
+    int nLine;
     int priority;
     int xStart, yStart, xEnd, yEnd;
-    int xMin, xMax, yMin, yMax;
-    int colorPlane;
+    int planeColor;
     unsigned int colorStart, colorEnd;
 
-    inFile >> nplane;
-    for (int i = 0; i < nplane; ++i)
+    inFile >> nPlane;
+    for (int i = 0; i < nPlane; ++i)
     {
-        inFile >> nline;
-        inFile >> hex >> colorPlane;
+        inFile >> nLine;
+        inFile >> hex >> planeColor;
         inFile >> priority;
+
         vector<Line> lines;
-        for (int j = 0; j < nline; ++j) {
+        for (int j = 0; j < nLine; ++j)
+        {
+
             inFile >> dec >> xStart;
             inFile >> yStart;
             inFile >> hex >> colorStart;
@@ -46,7 +48,8 @@ Object::Object(float x, float y, std::string filename)
             Line line = Line(startpx, endpx);
             lines.push_back(line);
         }
-        Plane plane = Plane(x, y, nline, lines, colorPlane, priority);
+
+        Plane plane = Plane(x, y, nLine, lines, planeColor, priority);
         planes.push_back(plane);
     }
     inFile.close();
@@ -62,14 +65,24 @@ void Object::setPos(float x, float y)
     this->position = Pixel(x, y);
 }
 
-void Object::setNPlane(int nplane)
+void Object::setNPlane(int nPlane)
 {
-    this->nplane = nplane;
+    this->nPlane = nPlane;
+}
+
+void Object::setWidth()
+{
+    // TODO : calculate total width of object
+}
+
+void Object::setHeight()
+{
+    // TODO : calculate total height of object
 }
 
 vector<Plane> Object::getPlanes() const
 {
-    return planes;
+    return this->planes;
 }
 
 Pixel Object::getPos() const
@@ -79,15 +92,42 @@ Pixel Object::getPos() const
 
 int Object::getNPlane() const
 {
-    return this->nplane;
+    return this->nPlane;
+}
+
+int Object::getWidth() const
+{
+    return this->width;
+}
+int Object::getHeight() const
+{
+    return this->height;
 }
 
 const vector<Plane> &Object::getRefPlanes() const
 {
-    return planes;
+    return this->planes;
 }
 
 const Pixel &Object::getRefPos() const
 {
     return this->position;
+}
+
+void Object::reverseHorizontal()
+{
+    // TODO : implement reverse as an object
+}
+
+bool Object::outOfWindow(int height, int width) const
+{
+    for (const Plane &plane : this->getRefPlanes())
+    {
+        if (plane.outOfWindow(height, width))
+        {
+            return true;
+        }
+    }
+
+    return false;
 }

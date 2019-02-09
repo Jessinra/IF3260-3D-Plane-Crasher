@@ -9,7 +9,7 @@ Plane::Plane(float x, float y, int nline, vector<Line> lines, int color, int pri
 {
     setPos(x, y);
     this->lines = lines;
-    this->col = color;
+    this->color = color;
     this->nline = nline;
     this->priority = priority;
     
@@ -43,9 +43,9 @@ Plane::Plane(float x, float y, int nline, vector<Line> lines, int color, int pri
     this->width = xMax + 1;
 }
 
-bool Plane::outOfWindow(int h, int w) const
+bool Plane::outOfWindow(int height, int width) const
 {
-    return (this->position.getX() >= w || this->position.getY() >= h || this->position.getX() <= -width || this->position.getY() <= -height);
+    return (this->position.getX() >= width || this->position.getY() >= height || this->position.getX() <= -width || this->position.getY() <= -height);
 }
 
 void Plane::reverseHorizontal(){
@@ -70,7 +70,7 @@ void Plane::setNLine(int nline) {
 }
 
 void Plane::setColor(int color) {
-    this->col = color;
+    this->color = color;
 }
 
 void Plane::setPriority(int priority) {
@@ -78,32 +78,32 @@ void Plane::setPriority(int priority) {
 }
 
 int Plane::getNLine() const {
-    return nline;
+    return this->nline;
 }  
 
 int Plane::getColor() const
 {
-    return col;
+    return this->color;
 }
 
 int Plane::getPriority() const
 {
-    return priority;
-}
-
-vector<Line> Plane::getLines() const
-{
-    return lines;
+    return this->priority;
 }
 
 int Plane::getWidth() const
 {
-    return width;
+    return this->width;
 }
 
 int Plane::getHeight() const
 {
-    return height;
+    return this->height;
+}
+
+vector<Line> Plane::getLines() const
+{
+    return this->lines;
 }
 
 Pixel Plane::getPos() const
@@ -113,7 +113,7 @@ Pixel Plane::getPos() const
 
 const vector<Line> &Plane::getRefLines() const
 {
-    return lines;
+    return this->lines;
 }
 
 const Pixel &Plane::getRefPos() const

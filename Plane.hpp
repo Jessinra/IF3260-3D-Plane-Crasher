@@ -13,37 +13,39 @@
 
 class Plane
 {
-    // Suatu plane (bidang) tersusun atas garix matrix of pixel
-
   protected:
     Pixel position;
     vector<Line> lines;
+
     int width;
     int height;
+
     int nline;
-    int col;
+    int color;
     int priority;
 
   public:
     Plane();
-    Plane(float, float, int, vector<Line>, int, int);
+    Plane(float x, float y, int nline, vector<Line> lines, int color, int priority);
 
-    bool outOfWindow(int, int) const;
+    bool outOfWindow(int height, int width) const;
     void reverseHorizontal();
 
-    void setPos(Pixel); // change setPos to void
-    void setPos(float, float);
-    void setNLine(int);
-    void setColor(int);
-    void setPriority(int);
+    void setPos(Pixel position);
+    void setPos(float x, float y);
+    void setNLine(int nline);
+    void setColor(int color);
+    void setPriority(int priority);
 
     int getNLine() const;
     int getColor() const;
     int getPriority() const;
-    vector<Line> getLines() const;
-    Pixel getPos() const;
     int getWidth() const;
     int getHeight() const;
+
+    vector<Line> getLines() const;
+    Pixel getPos() const;
+
     const vector<Line> &getRefLines() const;
     const Pixel &getRefPos() const;
 };

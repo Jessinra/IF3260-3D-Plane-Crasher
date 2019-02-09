@@ -17,10 +17,11 @@ class Line
     Pixel endPixel;
 
   public:
-    Line(Pixel, Pixel);
+    Line(Pixel startPixel, Pixel endPixel);
 
-    void setStartPixel(Pixel);
-    void setEndPixel(Pixel);
+    void setStartPixel(Pixel startPixel);
+    void setEndPixel(Pixel endPixel);
+    
     Pixel getStartPixel() const;
     Pixel getEndPixel() const;
     unsigned int getStartColor() const;
