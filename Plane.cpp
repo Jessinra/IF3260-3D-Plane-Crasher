@@ -13,19 +13,16 @@ Plane::Plane(float x, float y, int nline, vector<Line> lines, int color)
     this->nline = nline;
     
 
-    int xStart, yStart, xEnd, yEnd;
-    int xMin, xMax, yMin, yMax;
-    Pixel pxl;
+    float xStart, yStart, xEnd, yEnd;
+    float xMin, xMax, yMin, yMax;
 
     for (int i = 0; i < this->nline; ++i)
     {
-        pxl = lines[i].getStartPixel;
-        xStart = pxl.getX;
-        yStart = pxl.getY;
-        pxl = lines[i].getEndPixel;
-        xEnd = pxl.getX;
-        yEnd = pxl.getY;
-        
+        xStart = lines[i].getStartPixel().getX();
+        yStart = lines[i].getStartPixel().getY();
+        xEnd = lines[i].getEndPixel().getX();
+        yEnd = lines[i].getEndPixel().getY();
+
         if (i == 0)
         {
             xMin = min(xStart, xEnd);
