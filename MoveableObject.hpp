@@ -1,10 +1,7 @@
 #ifndef MOVEABLE_OBJECT_HPP
 #define MOVEABLE_OBJECT_HPP
 
-#include <iostream>
-
 #include "Object.hpp"
-
 using namespace std;
 
 class MoveableObject : public Object
@@ -27,8 +24,8 @@ class MoveableObject : public Object
     float getSpeed() const;
 
     void move();
-    void selfRotation(float pivotX, float pivotY, float theta); // TODO
-    void selfDilated(float pivotX, float pivotY, float scalingConstant); // TODO
+    void selfRotation(float pivotX, float pivotY, float theta);
+    void selfDilated(float pivotX, float pivotY, float scalingConstant);
 };
 
 #endif

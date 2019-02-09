@@ -1,8 +1,6 @@
 #ifndef MOVEABLE_PLANE_HPP
 #define MOVEABLE_PLANE_HPP
 
-#include <iostream>
-
 #include "Plane.hpp"
 using namespace std;
 

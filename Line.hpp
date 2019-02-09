@@ -2,16 +2,12 @@
 #define LINE_HPP
 
 #include <cmath>
-#include <cstdlib>
-#include <iostream>
-#include <vector>
 
 #include "Pixel.hpp"
 using namespace std;
 
 class Line
 {
-
   protected:
     Pixel startPixel;
     Pixel endPixel;

@@ -1,8 +1,9 @@
 #ifndef POINT_HPP
 #define POINT_HPP
 
-#include <vector>
 #define PI 3.14159265
+
+#include "Color.hpp"
 using namespace std;
 
 class Pixel

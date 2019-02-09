@@ -5,9 +5,8 @@
 #include <cstdio>
 #include <vector>
 
-#include "Line.hpp"
 #include "Plane.hpp"
-#include "Pixel.hpp"
+using namespace std;
 
 /* changable */
 #define maxHeight 1080

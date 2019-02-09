@@ -1,15 +1,10 @@
 #ifndef PLANE_HPP
 #define PLANE_HPP
 
-#include <algorithm>
-#include <fstream>
-#include <iostream>
-#include <string>
 #include <vector>
 
-#include "Color.hpp"
 #include "Line.hpp"
-#include "Pixel.hpp"
+using namespace std;
 
 class Plane
 {
@@ -19,7 +14,6 @@ class Plane
 
     int width;
     int height;
-
     int nline;
     int color;
     int priority;

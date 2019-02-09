@@ -98,4 +98,3 @@ void MoveableObject::selfDilated(float pivotX, float pivotY, float scalingConsta
         plane->selfDilated(pivotX, pivotY, scalingConstant);
     }
 }
-

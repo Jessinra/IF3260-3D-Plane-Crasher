@@ -78,7 +78,9 @@ void PlaneFiller::storeEdgeInTable(int x1, int y1, int x2, int y2)
 
         // horizontal lines are not stored in edge table (no inverseGradient)
         if (y2 == y1)
+        {
             return;
+        }
 
         inverseGradient = (float)1.0 / gradient;
     }
@@ -96,8 +98,6 @@ void PlaneFiller::storeEdgeInTable(int x1, int y1, int x2, int y2)
         xMin = x1;
     }
 
-    if (yMin < 0)
-        std::cerr << "anjing eh " << yMin << std::endl;
     storeEdgeInTuple(EdgeTable[yMin], yMax, xMin, inverseGradient);
 }
 

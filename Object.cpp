@@ -80,7 +80,7 @@ void Object::setHeight()
     // TODO : calculate total height of object
 }
 
-vector<Plane*> Object::getPlanes() const
+vector<Plane *> Object::getPlanes() const
 {
     return this->planes;
 }
@@ -104,7 +104,7 @@ int Object::getHeight() const
     return this->height;
 }
 
-const vector<Plane*> &Object::getRefPlanes() const
+const vector<Plane *> &Object::getRefPlanes() const
 {
     return this->planes;
 }

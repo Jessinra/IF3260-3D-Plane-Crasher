@@ -12,7 +12,6 @@ Plane::Plane(float x, float y, int nline, vector<Line> lines, int color, int pri
     this->color = color;
     this->nline = nline;
     this->priority = priority;
-    
 
     float xStart, yStart, xEnd, yEnd;
     float xMin, xMax, yMin, yMax;
@@ -48,8 +47,10 @@ bool Plane::outOfWindow(int height, int width) const
     return (this->position.getX() >= width || this->position.getY() >= height || this->position.getX() <= -width || this->position.getY() <= -height);
 }
 
-void Plane::reverseHorizontal(){
-    for(Line &line : lines){
+void Plane::reverseHorizontal()
+{
+    for (Line &line : lines)
+    {
         line.setStartPixel(Pixel(width - line.getStartPixel().getX() - 1, line.getStartPixel().getY(), line.getStartPixel().getColor()));
         line.setEndPixel(Pixel(width - line.getEndPixel().getX() - 1, line.getEndPixel().getY(), line.getEndPixel().getColor()));
     }
@@ -65,21 +66,25 @@ void Plane::setPos(float x, float y)
     this->position = Pixel(x, y);
 }
 
-void Plane::setNLine(int nline) {
+void Plane::setNLine(int nline)
+{
     this->nline = nline;
 }
 
-void Plane::setColor(int color) {
+void Plane::setColor(int color)
+{
     this->color = color;
 }
 
-void Plane::setPriority(int priority) {
+void Plane::setPriority(int priority)
+{
     this->priority = priority;
 }
 
-int Plane::getNLine() const {
+int Plane::getNLine() const
+{
     return this->nline;
-}  
+}
 
 int Plane::getColor() const
 {

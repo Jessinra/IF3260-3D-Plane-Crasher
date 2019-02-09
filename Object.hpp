@@ -4,21 +4,19 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <vector>
 
-#include "Color.hpp"
 #include "Plane.hpp"
-#include "Line.hpp"
-#include "Pixel.hpp"
 #include "MoveablePlane.hpp"
+using namespace std;
 
 class Object
 {
   protected:
     Pixel position;
-    int nPlane;
     vector<Plane*> planes;
+
+    int nPlane;
     int width;
     int height;
 

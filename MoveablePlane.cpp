@@ -1,7 +1,6 @@
 
 #include "MoveablePlane.hpp"
 
-
 MoveablePlane::MoveablePlane(float x, float y, int nline, vector<Line> lines, int color, int priority) : Plane(x, y, nline, lines, color, priority)
 {
     this->dx = 0;
@@ -171,4 +170,3 @@ void MoveablePlane::selfDilated(float pivotX, float pivotY, float scalingConstan
     width = xMax + 1;
     height = yMax + 1;
 }
-

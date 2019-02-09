@@ -361,6 +361,7 @@ void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line &line)
         int y = yStart;
         const float deltaErr = fabs(deltaY / deltaX);
         float error = 0;
+        
         for (int x = xStart; x != xEnd + xStep; x += xStep)
         {
             unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
@@ -383,6 +384,7 @@ void Master::drawLine(vector<vector<unsigned int>> &buffer, const Line &line)
         int x = xStart;
         const float deltaErr = fabs(deltaX / deltaY);
         float error = 0;
+        
         for (int y = yStart; y != yEnd + yStep; y += yStep)
         {
             unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
@@ -406,6 +408,7 @@ void Master::drawPlane(const Plane &plane)
 {
     int positionX = plane.getRefPos().getX();
     int positionY = plane.getRefPos().getY();
+    
     for (const Line &line : plane.getRefLines())
     {
         drawLine(positionX, positionY, line);
@@ -432,6 +435,7 @@ void Master::drawSolidPlane2(const Plane &plane)
     const unsigned int back = 0;
     unsigned int color = back;
     vector<vector<unsigned int>> vir(height, vector<unsigned int>(width, back));
+    
     // draw line
     for (const Line &line : plane.getRefLines())
     {
@@ -457,6 +461,7 @@ void Master::drawSolidPlane2(const Plane &plane)
                         break;
                     }
                 }
+                
                 // botom check
                 bool bot = false;
                 for (int k = -1; k <= 1; ++k)
@@ -467,6 +472,7 @@ void Master::drawSolidPlane2(const Plane &plane)
                         break;
                     }
                 }
+                
                 /* Anomaly check end */
                 if (top && bot)
                 {
@@ -483,16 +489,16 @@ void Master::drawSolidPlane2(const Plane &plane)
     draw(plane.getRefPos().getX(), plane.getRefPos().getY(), vir);
 }
 
-void Master::drawObject(const Object &object){
-
+void Master::drawObject(const Object &object)
+{
     for (const Plane *plane : object.getRefPlanes())
     {
         drawPlane(*plane);
     }
 }
 
-void Master::drawSolidObject(const Object &object){
-
+void Master::drawSolidObject(const Object &object)
+{
     for (const Plane *plane : object.getRefPlanes())
     {
         drawSolidPlane(*plane);

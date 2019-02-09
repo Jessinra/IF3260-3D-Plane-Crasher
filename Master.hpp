@@ -10,7 +10,6 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <iostream>
 #include <vector>
 
 #include "Line.hpp"
@@ -18,10 +17,12 @@
 #include "PlaneFiller.hpp"
 #include "Pixel.hpp"
 #include "Object.hpp"
+using namespace std;
 
 class Master
 {
   protected:
+  
     /* unchangeable */
     struct fb_var_screeninfo vinfo;
     struct fb_fix_screeninfo finfo;
