@@ -20,6 +20,7 @@ Object::Object(float x, float y, std::string filename)
     }
 
     int nline;
+    int priority;
     int xStart, yStart, xEnd, yEnd;
     int xMin, xMax, yMin, yMax;
     int colorPlane;
@@ -30,6 +31,7 @@ Object::Object(float x, float y, std::string filename)
     {
         inFile >> nline;
         inFile >> hex >> colorPlane;
+        inFile >> priority;
         vector<Line> lines;
         for (int j = 0; j < nline; ++j) {
             inFile >> dec >> xStart;
@@ -44,7 +46,7 @@ Object::Object(float x, float y, std::string filename)
             Line line = Line(startpx, endpx);
             lines.push_back(line);
         }
-        Plane plane = Plane(x, y, nline, lines, colorPlane);
+        Plane plane = Plane(x, y, nline, lines, colorPlane, priority);
         planes.push_back(plane);
     }
     inFile.close();

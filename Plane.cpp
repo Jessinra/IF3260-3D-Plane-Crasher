@@ -5,12 +5,13 @@ Plane::Plane()
 {
 }
 
-Plane::Plane(float x, float y, int nline, vector<Line> lines, int color)
+Plane::Plane(float x, float y, int nline, vector<Line> lines, int color, int priority)
 {
     setPos(x, y);
     this->lines = lines;
     this->col = color;
     this->nline = nline;
+    this->priority = priority;
     
 
     float xStart, yStart, xEnd, yEnd;
@@ -72,6 +73,10 @@ void Plane::setColor(int color) {
     this->col = color;
 }
 
+void Plane::setPriority(int priority) {
+    this->priority = priority;
+}
+
 int Plane::getNLine() const {
     return nline;
 }  
@@ -79,6 +84,11 @@ int Plane::getNLine() const {
 int Plane::getColor() const
 {
     return col;
+}
+
+int Plane::getPriority() const
+{
+    return priority;
 }
 
 vector<Line> Plane::getLines() const
