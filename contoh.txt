@@ -1,0 +1,21 @@
+nlines colorPlane
+//iterate as much as nlines
+XStart YStart ColorStart XEnd YEnd ColorEnd
+XStart YStart ColorStart XEnd YEnd ColorEnd
+XStart YStart ColorStart XEnd YEnd ColorEnd
+XStart YStart ColorStart XEnd YEnd ColorEnd
+
+contoh:
+membuat 2 persegi
+
+2
+4 0xdddddd
+000 000 0xffffff 000 050 0xffffff
+000 050 0xffffff 050 050 0xffffff
+050 050 0xffffff 050 000 0xffffff
+050 000 0xffffff 000 000 0xffffff
+4 0xaaaaaa
+100 000 0xffffee 100 050 0xffffee
+100 050 0xffffee 150 050 0xffffee
+150 050 0xffffee 150 000 0xffffee
+150 000 0xffffee 100 000 0xffffee
