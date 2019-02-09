@@ -49,7 +49,7 @@ Object::Object(float x, float y, std::string filename)
             lines.push_back(line);
         }
 
-        Plane plane = Plane(x, y, nLine, lines, planeColor, priority);
+        Plane *plane = new MoveablePlane(x, y, nLine, lines, planeColor, priority);
         planes.push_back(plane);
     }
     inFile.close();
@@ -80,7 +80,7 @@ void Object::setHeight()
     // TODO : calculate total height of object
 }
 
-vector<Plane> Object::getPlanes() const
+vector<Plane*> Object::getPlanes() const
 {
     return this->planes;
 }
@@ -104,7 +104,7 @@ int Object::getHeight() const
     return this->height;
 }
 
-const vector<Plane> &Object::getRefPlanes() const
+const vector<Plane*> &Object::getRefPlanes() const
 {
     return this->planes;
 }
@@ -121,9 +121,9 @@ void Object::reverseHorizontal()
 
 bool Object::outOfWindow(int height, int width) const
 {
-    for (const Plane &plane : this->getRefPlanes())
+    for (const Plane *plane : this->getRefPlanes())
     {
-        if (plane.outOfWindow(height, width))
+        if (plane->outOfWindow(height, width))
         {
             return true;
         }

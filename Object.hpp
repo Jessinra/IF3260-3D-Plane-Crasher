@@ -11,13 +11,14 @@
 #include "Plane.hpp"
 #include "Line.hpp"
 #include "Pixel.hpp"
+#include "MoveablePlane.hpp"
 
 class Object
 {
   protected:
     Pixel position;
     int nPlane;
-    vector<Plane> planes;
+    vector<Plane*> planes;
     int width;
     int height;
 
@@ -32,13 +33,13 @@ class Object
     void setWidth();  // TODO
     void setHeight(); // TODO
 
-    vector<Plane> getPlanes() const;
+    vector<Plane*> getPlanes() const;
     Pixel getPos() const;
     int getNPlane() const;
     int getWidth() const;
     int getHeight() const;
 
-    const vector<Plane> &getRefPlanes() const;
+    const vector<Plane*> &getRefPlanes() const;
     const Pixel &getRefPos() const;
 
     void reverseHorizontal(); // TODO

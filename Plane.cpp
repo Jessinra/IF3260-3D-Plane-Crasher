@@ -120,3 +120,18 @@ const Pixel &Plane::getRefPos() const
 {
     return this->position;
 }
+
+void Plane::move()
+{
+    // Polymorphism
+}
+
+void Plane::selfRotation(float pivotX, float pivotY, float theta)
+{
+    // Polymorphism
+}
+
+void Plane::selfDilated(float pivotX, float pivotY, float scalingConstant)
+{
+    // Polymorphism
+}

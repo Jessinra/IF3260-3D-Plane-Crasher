@@ -48,6 +48,11 @@ class Plane
 
     const vector<Line> &getRefLines() const;
     const Pixel &getRefPos() const;
+
+    /* For MovableObject polymorphism purpose */
+    void move();
+    void selfRotation(float pivotX, float pivotY, float theta);
+    void selfDilated(float pivotX, float pivotY, float scalingConstant);
 };
 
 #endif

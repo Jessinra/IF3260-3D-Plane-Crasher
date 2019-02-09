@@ -485,16 +485,16 @@ void Master::drawSolidPlane2(const Plane &plane)
 
 void Master::drawObject(const Object &object){
 
-    for (const Plane &plane : object.getRefPlanes())
+    for (const Plane *plane : object.getRefPlanes())
     {
-        drawPlane(plane);
+        drawPlane(*plane);
     }
 }
 
 void Master::drawSolidObject(const Object &object){
 
-    for (const Plane &plane : object.getRefPlanes())
+    for (const Plane *plane : object.getRefPlanes())
     {
-        drawSolidPlane(plane);
+        drawSolidPlane(*plane);
     }
 }
