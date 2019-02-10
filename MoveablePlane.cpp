@@ -43,7 +43,7 @@ void MoveablePlane::calculate(){
     this->xMax -= this->xMin;
     this->yMax -= this->yMin;
 
-    this->position.setPos(this->position.getX() + xMin, this->position.getY() + yMin);
+    this->position.setPoint(this->position.getX() + xMin, this->position.getY() + yMin);
 
     this->xMin = this->yMin = 0;
 }
