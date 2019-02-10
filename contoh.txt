@@ -1,3 +1,5 @@
+nplanes
+
 nlines colorPlane Priority
 //iterate as much as nlines
 XStart YStart ColorStart XEnd YEnd ColorEnd
