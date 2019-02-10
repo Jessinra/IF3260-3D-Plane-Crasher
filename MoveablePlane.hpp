@@ -7,23 +7,19 @@ using namespace std;
 class MoveablePlane : public Plane
 {
 protected:
-  float speed;
-  float dx, dy;
+  Pixel position;
 
 public:
-  MoveablePlane(float x, float y, vector<Line> lines, int color, int priority);
-  MoveablePlane(float x, float y, float dx, float dy, float speed, vector<Line> lines, int color, int priority);
-  MoveablePlane(const Plane &plane);
-  MoveablePlane(float dx, float dy, float speed, const Plane &plane);
+  MoveablePlane(float x, float y, const vector<Line> &lines, int color, int priority);
+  MoveablePlane(float x, float y, const Plane &plane);
+  
+  void setPos(Pixel position);
+  void setPos(float x, float y);
+  
+  Pixel getPos() const;
+  const Pixel &getRefPos() const;
+  void calculate() override;
 
-  void setVector(float dx, float dy);
-  void setSpeed(float speed);
-
-  float getDx() const;
-  float getDy() const;
-  float getSpeed() const;
-
-  void move();
   void selfRotation(float pivotX, float pivotY, float theta);
   void selfDilated(float pivotX, float pivotY, float scalingConstant);
 };

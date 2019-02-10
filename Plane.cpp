@@ -1,43 +1,21 @@
 
 #include "Plane.hpp"
 
-Plane::Plane()
+Plane::Plane(const vector<Line> &lines, int color, int priority)
 {
-}
-
-Plane::Plane(float x, float y, vector<Line> lines, int color, int priority)
-{
-    this->setPos(x, y);
     this->lines = lines;
     this->color = color;
     this->priority = priority;
-
-    this->setHeight();
-    this->setWidth();
-}
-
-bool Plane::outOfWindow(int height, int width) const
-{
-    return (this->position.getX() >= width || this->position.getY() >= height || this->position.getX() <= -width || this->position.getY() <= -height);
+    this->calculate();
 }
 
 void Plane::reverseHorizontal()
 {
-    for (Line &line : lines)
+    for (Line &line : this->lines)
     {
-        line.setStartPixel(Pixel(width - line.getStartPixel().getX() - 1, line.getStartPixel().getY(), line.getStartPixel().getColor()));
-        line.setEndPixel(Pixel(width - line.getEndPixel().getX() - 1, line.getEndPixel().getY(), line.getEndPixel().getColor()));
+        line.setStartPixel(Pixel(this->getWidth()- line.getStartPixel().getX() - 1, line.getStartPixel().getY(), line.getStartPixel().getColor()));
+        line.setEndPixel(Pixel(this->getWidth() - line.getEndPixel().getX() - 1, line.getEndPixel().getY(), line.getEndPixel().getColor()));
     }
-}
-
-void Plane::setPos(Pixel position)
-{
-    this->position = position;
-}
-
-void Plane::setPos(float x, float y)
-{
-    this->position = Pixel(x, y);
 }
 
 void Plane::setColor(int color)
@@ -48,42 +26,6 @@ void Plane::setColor(int color)
 void Plane::setPriority(int priority)
 {
     this->priority = priority;
-}
-
-void Plane::setWidth()
-{
-    float xStart, xEnd;
-    float xMin = 9999999; 
-    float xMax = -9999999;
-
-    for (Line line : this->lines)
-    {
-        xStart = line.getStartPixel().getX();
-        xEnd = line.getEndPixel().getX();
-
-        xMin = min(xMin, min(xStart, xEnd));
-        xMax = max(xMax, max(xStart, xEnd));
-    }
-
-    this->width = xMax - xMin + 1;
-}
-
-void Plane::setHeight()
-{
-    float yStart, yEnd;
-    float yMin = 9999999; 
-    float yMax = -9999999;
-
-    for (Line line : this->lines)
-    {
-        yStart = line.getStartPixel().getY();
-        yEnd = line.getEndPixel().getY();
-
-        yMin = min(yMin, min(yStart, yEnd));
-        yMax = max(yMax, max(yStart, yEnd));
-    }
-
-    this->height = yMax - yMin + 1;
 }
 
 int Plane::getColor() const
@@ -98,12 +40,12 @@ int Plane::getPriority() const
 
 int Plane::getWidth() const
 {
-    return this->width;
+    return this->xMax - this->xMin + 1;
 }
 
 int Plane::getHeight() const
 {
-    return this->height;
+    return this->yMax - this->yMin + 1;
 }
 
 vector<Line> Plane::getLines() const
@@ -111,24 +53,10 @@ vector<Line> Plane::getLines() const
     return this->lines;
 }
 
-Pixel Plane::getPos() const
-{
-    return this->position;
-}
 
 const vector<Line> &Plane::getRefLines() const
 {
     return this->lines;
-}
-
-const Pixel &Plane::getRefPos() const
-{
-    return this->position;
-}
-
-void Plane::move()
-{
-    // Polymorphism
 }
 
 void Plane::selfRotation(float pivotX, float pivotY, float theta)
@@ -139,4 +67,29 @@ void Plane::selfRotation(float pivotX, float pivotY, float theta)
 void Plane::selfDilated(float pivotX, float pivotY, float scalingConstant)
 {
     // Polymorphism
+}
+
+void Plane::calculate() {
+    if(lines.empty()) return;
+
+    this->xMin = min(lines[0].getRefStartPixel().getX(), lines[0].getRefEndPixel().getX());
+    this->xMax = max(lines[0].getRefStartPixel().getX(), lines[0].getRefEndPixel().getX());
+    this->yMin = min(lines[0].getRefStartPixel().getY(), lines[0].getRefEndPixel().getY());
+    this->yMax = max(lines[0].getRefStartPixel().getY(), lines[0].getRefEndPixel().getY());
+    for(int i=1;i<lines.size();++i){
+        this->xMin = min(this->xMin, min(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
+        this->xMax = max(this->xMax, max(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
+        this->yMin = min(this->yMin, min(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
+        this->yMax = max(this->xMax, max(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
+    }
+
+    for (Line &line : this->lines){
+        line.setStartPixel(Pixel(line.getStartPixel().getX() - this->xMin, line.getStartPixel().getY() - this->yMin, line.getStartPixel().getColor()));
+        line.setEndPixel(Pixel(line.getEndPixel().getX() - this->xMin, line.getEndPixel().getY() - this->yMin, line.getEndPixel().getColor()));
+    }
+
+    this->xMax -= this->xMin;
+    this->yMax -= this->yMin;
+
+    this->xMin = this->yMin = 0;
 }
