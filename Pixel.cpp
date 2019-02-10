@@ -3,50 +3,24 @@
 #include <iostream>
 #include "Color.hpp"
 
-Pixel::Pixel()
+Pixel::Pixel() : Point()
 {
-    this->x = 0;
-    this->y = 0;
     this->color = Color::BLACK;
 }
 
-Pixel::Pixel(float x, float y)
+Pixel::Pixel(float x, float y) : Point(x, y)
 {
-    this->x = x;
-    this->y = y;
     this->color = Color::WHITE;
 }
 
-Pixel::Pixel(float x, float y, unsigned int color)
+Pixel::Pixel(float x, float y, unsigned int color) : Point(x, y)
 {
-    this->x = x;
-    this->y = y;
     this->color = color;
-}
-
-float Pixel::getX() const
-{
-    return this->x;
-}
-
-float Pixel::getY() const
-{
-    return this->y;
 }
 
 unsigned int Pixel::getColor() const
 {
     return this->color;
-}
-
-void Pixel::setX(float x)
-{
-    this->x = x;
-}
-
-void Pixel::setY(float y)
-{
-    this->y = y;
 }
 
 void Pixel::setPos(float x, float y)
@@ -62,8 +36,8 @@ void Pixel::setColor(unsigned int color)
 
 Pixel Pixel::rotation(float pivotX, float pivotY, float theta)
 {
-    int resultX = this->x;
-    int resultY = this->y;
+    float resultX = this->x;
+    float resultY = this->y;
 
     resultX -= pivotX;
     resultY -= pivotY;

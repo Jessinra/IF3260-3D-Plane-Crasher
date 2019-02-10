@@ -1,16 +1,16 @@
-#ifndef POINT_HPP
-#define POINT_HPP
+#ifndef PIXEL_HPP
+#define PIXEL_HPP
 
 #define PI 3.14159265
 
 #include "Color.hpp"
+#include "Point.hpp"
+
 using namespace std;
 
-class Pixel
+class Pixel : public Point
 {
   private:
-    float x;
-    float y;
     unsigned int color;
 
   public:
@@ -18,12 +18,8 @@ class Pixel
     Pixel(float x, float y);
     Pixel(float x, float y, unsigned int color);
 
-    float getX() const;
-    float getY() const;
     unsigned int getColor() const;
 
-    void setX(float x);
-    void setY(float y);
     void setPos(float x, float y);
     void setColor(unsigned int color);
     
