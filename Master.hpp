@@ -80,7 +80,6 @@ class Master
     
     void drawPlane(const Plane &plane);
     void drawSolidPlane(const Plane &plane);
-    void drawSolidPlane2(const Plane &plane);
 
     void drawObject(const Object &object);
     void drawSolidObject(const Object &object);
