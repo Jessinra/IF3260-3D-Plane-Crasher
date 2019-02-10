@@ -12,6 +12,11 @@ void Point::setY(float y) {
     this->y = y;
 }
 
+void Point::setPoint(float x, float y){
+    this->x = x;
+    this->y = y;
+}
+
 float Point::getX() const{
     return this->x;
 }

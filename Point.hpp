@@ -9,6 +9,7 @@ public:
     Point();
     void setX(float x);
     void setY(float y);
+    void setPoint(float x, float y);
     float getX() const;
     float getY() const;
 };

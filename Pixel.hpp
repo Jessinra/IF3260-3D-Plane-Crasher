@@ -20,7 +20,6 @@ class Pixel : public Point
 
     unsigned int getColor() const;
 
-    void setPos(float x, float y);
     void setColor(unsigned int color);
     
     Pixel rotation(float pivotX, float pivotY, float theta);

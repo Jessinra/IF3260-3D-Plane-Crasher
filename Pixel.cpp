@@ -23,12 +23,6 @@ unsigned int Pixel::getColor() const
     return this->color;
 }
 
-void Pixel::setPos(float x, float y)
-{
-    this->x = x;
-    this->y = y;
-}
-
 void Pixel::setColor(unsigned int color)
 {
     this->color = color;
@@ -42,8 +36,8 @@ Pixel Pixel::rotation(float pivotX, float pivotY, float theta)
     resultX -= pivotX;
     resultY -= pivotY;
 
-    float sinTheta = sin(theta * PI / 180);
-    float cosTheta = cos(theta * PI / 180);
+    float sinTheta = (float)sin(theta * PI / 180);
+    float cosTheta = (float)cos(theta * PI / 180);
 
     float xnew = resultX * cosTheta - resultY * sinTheta;
     float ynew = resultX * sinTheta + resultY * cosTheta;
