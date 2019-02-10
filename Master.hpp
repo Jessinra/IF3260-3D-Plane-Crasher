@@ -61,6 +61,7 @@ class Master
 
     bool isInsideWindow(int, int);
     void assignColor(int, int, unsigned int);
+    unsigned int frameColor(int , int);
     static void assignColorBuffer(vector<vector<unsigned int> > &, int, int, unsigned int);
     void copyColor(int, int, int, int);
     void clearWindow();

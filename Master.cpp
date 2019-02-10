@@ -119,6 +119,14 @@ void Master::assignColor(int x, int y, unsigned int color)
     }
 }
 
+unsigned int Master::frameColor(int x, int y) 
+{
+    if (isInsideWindow(x, y)) {
+        int location = x * xmultiplier + xadder + y * ymultiplier + yadder;
+        return *((unsigned int *)(fbp + location));
+    }
+}
+
 void Master::copyColor(int xTarget, int yTarget, int xSource, int ySource)
 {
     if (isInsideWindow(xTarget, yTarget) && isInsideWindow(xSource, ySource))
@@ -275,7 +283,9 @@ void Master::drawLine(int positionX, int positionY, const Line &line)
     for (int x = xStart; x != xEnd + xStep;)
     {
         unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
-        assignColor(positionX + x, positionY + y, color);
+       if (frameColor(positionX + x, positionY + y) == 0) {
+            assignColor(positionX + x, positionY + y, color);
+       }
 
         if (error >= 0.5)
         {
