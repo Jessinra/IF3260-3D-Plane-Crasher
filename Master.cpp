@@ -272,7 +272,9 @@ void Master::drawLine(int positionX, int positionY, const Line &line)
             for (int y = yStart; y != yEnd + yStep; y += yStep)
             {
                 unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
-                assignColor(positionX + xStart, positionY + y, color);
+                if (frameColor(positionX + xStart, positionY + y) == 0) {
+                    assignColor(positionX + xStart, positionY + y, color);
+                }
 
                 red += redStep;
                 green += greenStep;
