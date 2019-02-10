@@ -59,12 +59,12 @@ const vector<Line> &Plane::getRefLines() const
     return this->lines;
 }
 
-void Plane::selfRotation(float pivotX, float pivotY, float theta)
+void Plane::selfRotate(float pivotX, float pivotY, float theta)
 {
     // Polymorphism
 }
 
-void Plane::selfDilated(float pivotX, float pivotY, float scalingConstant)
+void Plane::selfDilate(float pivotX, float pivotY, float scalingConstant)
 {
     // Polymorphism
 }

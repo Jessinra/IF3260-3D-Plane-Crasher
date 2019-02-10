@@ -48,7 +48,7 @@ void MoveablePlane::calculate(){
     this->xMin = this->yMin = 0;
 }
 
-void MoveablePlane::selfRotation(float pivotX, float pivotY, float theta)
+void MoveablePlane::selfRotate(float pivotX, float pivotY, float theta)
 {
     pivotX -= this->position.getX();
     pivotY -= this->position.getY();
@@ -62,7 +62,7 @@ void MoveablePlane::selfRotation(float pivotX, float pivotY, float theta)
     calculate();
 }
 
-void MoveablePlane::selfDilated(float pivotX, float pivotY, float scalingConstant)
+void MoveablePlane::selfDilate(float pivotX, float pivotY, float scalingConstant)
 {
     for (Line &line : this->lines){
         line.setStartPixel(line.getStartPixel().dilated(pivotX, pivotY, scalingConstant));

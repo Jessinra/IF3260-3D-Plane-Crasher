@@ -20,8 +20,8 @@ public:
   const Pixel &getRefPos() const;
   void calculate() override;
 
-  void selfRotation(float pivotX, float pivotY, float theta);
-  void selfDilated(float pivotX, float pivotY, float scalingConstant);
+  void selfRotate(float pivotX, float pivotY, float theta) override;
+  void selfDilate(float pivotX, float pivotY, float scalingConstant) override;
 };
 
 #endif

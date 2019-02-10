@@ -35,8 +35,8 @@ class Plane
     const vector<Line> &getRefLines() const;
 
     /* For MovableObject polymorphism purpose */
-    virtual void selfRotation(float pivotX, float pivotY, float theta);
-    virtual void selfDilated(float pivotX, float pivotY, float scalingConstant);
+    virtual void selfRotate(float pivotX, float pivotY, float theta);
+    virtual void selfDilate(float pivotX, float pivotY, float scalingConstant);
 };
 
 #endif
