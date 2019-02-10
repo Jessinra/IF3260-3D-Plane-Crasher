@@ -38,10 +38,10 @@ unsigned int Line::getEndColor() const
 
 const Pixel &Line::getRefStartPixel() const
 {
-    return startPixel;
+    return this->startPixel;
 }
 
 const Pixel &Line::getRefEndPixel() const
 {
-    return endPixel;
+    return this->endPixel;
 }
