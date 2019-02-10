@@ -119,6 +119,14 @@ void Master::assignColor(int x, int y, unsigned int color)
     }
 }
 
+unsigned int Master::frameColor(int x, int y) 
+{
+    if (isInsideWindow(x, y)) {
+        int location = x * xmultiplier + xadder + y * ymultiplier + yadder;
+        return *((unsigned int *)(fbp + location));
+    }
+}
+
 void Master::copyColor(int xTarget, int yTarget, int xSource, int ySource)
 {
     if (isInsideWindow(xTarget, yTarget) && isInsideWindow(xSource, ySource))
@@ -280,7 +288,9 @@ void Master::drawLine(int positionX, int positionY, const Line &line)
     for (int x = xStart; x != xEnd + xStep;)
     {
         unsigned int color = ((unsigned int)floor(red) << 16) + ((unsigned int)floor(green) << 8) + ((unsigned int)floor(blue));
-        assignColor(positionX + x, positionY + y, color);
+       if (frameColor(positionX + x, positionY + y) == 0) {
+            assignColor(positionX + x, positionY + y, color);
+       }
 
         if (error >= 0.5)
         {
@@ -426,67 +436,6 @@ void Master::drawSolidPlane(const Plane &plane)
     {
         drawLine(positionX, positionY, line);
     }
-}
-
-void Master::drawSolidPlane2(const Plane &plane)
-{
-    int height = plane.getHeight();
-    int width = plane.getWidth();
-    const unsigned int back = 0;
-    unsigned int color = back;
-    vector<vector<unsigned int>> vir(height, vector<unsigned int>(width, back));
-    
-    // draw line
-    for (const Line &line : plane.getRefLines())
-    {
-        drawLine(vir, line);
-    }
-
-    // filling top to down
-    for (int i = 1; i < height - 1; ++i)
-    {
-        color = back;
-        for (int j = 0; j < width; ++j)
-        {
-            if (vir[i][j] != back)
-            {
-                /* Anomaly check start */
-                // top check;
-                bool top = false;
-                for (int k = -1; k <= 1; ++k)
-                {
-                    if (j + k >= 0 && j + k < width && vir[i - 1][j + k] != back)
-                    {
-                        top = true;
-                        break;
-                    }
-                }
-                
-                // botom check
-                bool bot = false;
-                for (int k = -1; k <= 1; ++k)
-                {
-                    if (j + k >= 0 && j + k < width && vir[i + 1][j + k] != back)
-                    {
-                        bot = true;
-                        break;
-                    }
-                }
-                
-                /* Anomaly check end */
-                if (top && bot)
-                {
-                    color = color == back ? vir[i][j] : back;
-                }
-            }
-            else
-            {
-                vir[i][j] = color;
-            }
-        }
-    }
-
-    draw(plane.getRefPos().getX(), plane.getRefPos().getY(), vir);
 }
 
 void Master::drawObject(const Object &object)
