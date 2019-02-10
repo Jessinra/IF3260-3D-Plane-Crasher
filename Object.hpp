@@ -13,8 +13,10 @@ using namespace std;
 class Object
 {
   protected:
-    Pixel position;
-    vector<Plane*> planes;
+    Point position;
+    vector<MoveablePlane> planes;
+
+    float xMin, yMin, xMax, yMax;
 
     int nPlane;
     int width;
@@ -28,17 +30,17 @@ class Object
     void setPos(float x, float y);
     void setNPlane(int nPlane);
 
-    void setWidth();
-    void setHeight();
+    void calculate();
 
-    vector<Plane*> getPlanes() const;
-    Pixel getPos() const;
+    vector<MoveablePlane> getPlanes() const;
+    Point getPos() const;
     int getNPlane() const;
     int getWidth() const;
     int getHeight() const;
 
-    const vector<Plane*> &getRefPlanes() const;
-    const Pixel &getRefPos() const;
+    vector<MoveablePlane> & getRefPlanes();
+    const vector<MoveablePlane> & getConstRefPlanes() const;
+    const Point&getRefPos() const;
 
     void reverseHorizontal(); // TODO
     bool outOfWindow(int height, int width) const;

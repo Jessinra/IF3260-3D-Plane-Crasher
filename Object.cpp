@@ -49,12 +49,10 @@ Object::Object(float x, float y, std::string filename)
             lines.push_back(line);
         }
 
-        Plane *plane = new MoveablePlane(x, y, lines, planeColor, priority);
-        this->planes.push_back(plane);
+        this->planes.emplace_back(MoveablePlane(x, y, lines, planeColor, priority));
     }
 
-    this->setHeight();
-    this->setWidth();
+    calculate();
 
     inFile.close();
 }
@@ -74,52 +72,12 @@ void Object::setNPlane(int nPlane)
     this->nPlane = nPlane;
 }
 
-void Object::setWidth()
-{
-    float xStart, xEnd;
-    float xMin = 9999999; 
-    float xMax = -9999999;
-
-    for (Plane *plane: this->getPlanes())
-    {
-        for (Line line : plane->getLines())
-        {
-            xStart = line.getStartPixel().getX();
-            xEnd = line.getEndPixel().getX();
-
-            xMin = min(xMin, min(xStart, xEnd));
-            xMax = max(xMax, max(xStart, xEnd));
-        }
-    }
-    this->width = xMax - xMin + 1;
-}
-
-void Object::setHeight()
-{
-    float yStart, yEnd;
-    float yMin = 9999999; 
-    float yMax = -9999999;
-
-    for (Plane *plane: this->getPlanes())
-    {
-        for (Line line : plane->getLines())
-        {
-            yStart = line.getStartPixel().getY();
-            yEnd = line.getEndPixel().getY();
-
-            yMin = min(yMin, min(yStart, yEnd));
-            yMax = max(yMax, max(yStart, yEnd));
-        }
-    }
-    this->height = yMax - yMin + 1;
-}
-
-vector<Plane *> Object::getPlanes() const
+vector<MoveablePlane> Object::getPlanes() const
 {
     return this->planes;
 }
 
-Pixel Object::getPos() const
+Point Object::getPos() const
 {
     return this->position;
 }
@@ -138,12 +96,11 @@ int Object::getHeight() const
     return this->height;
 }
 
-const vector<Plane *> &Object::getRefPlanes() const
-{
+vector<MoveablePlane> &Object::getRefPlanes(){
     return this->planes;
 }
 
-const Pixel &Object::getRefPos() const
+const Point &Object::getRefPos() const
 {
     return this->position;
 }
@@ -151,9 +108,9 @@ const Pixel &Object::getRefPos() const
 void Object::reverseHorizontal()
 {
     // implement reverse as an object
-    for (Plane* plane : planes)
+    for (Plane &plane : planes)
     {
-        for (Line &line : plane->getLines())
+        for (Line &line : plane.getRefLines())
         {
             line.setStartPixel(Pixel(width - line.getStartPixel().getX() - 1, line.getStartPixel().getY(), line.getStartPixel().getColor()));
             line.setEndPixel(Pixel(width - line.getEndPixel().getX() - 1, line.getEndPixel().getY(), line.getEndPixel().getColor()));
@@ -163,13 +120,25 @@ void Object::reverseHorizontal()
 
 bool Object::outOfWindow(int height, int width) const
 {
-    for (const Plane *plane : this->getRefPlanes())
-    {
-        if (plane->outOfWindow(height, width))
-        {
-            return true;
-        }
-    }
+    return position.getX() + xMax < 0 || position.getY() + yMax < 0 || position.getX() >= width || position.getY() >= height;
+}
 
-    return false;
+const vector<MoveablePlane> &Object::getConstRefPlanes() const {
+    return this->planes;
+}
+
+void Object::calculate() {
+    if(planes.empty()) return;
+
+    xMin = planes[0].getUpperLeft().getX() + planes[0].getRefPos().getX();
+    yMin = planes[0].getUpperLeft().getY() + planes[0].getRefPos().getY();
+    xMax = planes[0].getLowerRight().getX() + planes[0].getRefPos().getX();
+    yMax = planes[0].getLowerRight().getY() + planes[0].getRefPos().getY();
+
+    for(int i=1;i<planes.size();++i){
+        xMin = min(xMin, planes[0].getUpperLeft().getX() + planes[0].getRefPos().getX());
+        yMin = min(yMin, planes[0].getUpperLeft().getY() + planes[0].getRefPos().getY());
+        xMax = max(xMax, planes[0].getLowerRight().getX() + planes[0].getRefPos().getX());
+        yMax = max(yMax, planes[0].getLowerRight().getY() + planes[0].getRefPos().getY());
+    }
 }

@@ -11,8 +11,8 @@ class MoveableObject : public Object
     float dx, dy;
 
   public:
-    MoveableObject(float x, float y, const std::string &filename);
-    MoveableObject(float x, float y, float dx, float dy, float speed, const std::string &filename);
+    MoveableObject(float x, float y, const string &filename);
+    MoveableObject(float x, float y, float dx, float dy, float speed, const string &filename);
     MoveableObject(const Object &obj);
     MoveableObject(float dx, float dy, float speed, const Object &obj);
 
@@ -24,8 +24,8 @@ class MoveableObject : public Object
     float getSpeed() const;
 
     void move();
-    void selfRotation(float pivotX, float pivotY, float theta);
-    void selfDilated(float pivotX, float pivotY, float scalingConstant);
+    void selfRotate(float pivotX, float pivotY, float theta);
+    void selfDilate(float pivotX, float pivotY, float scalingConstant);
 };
 
 #endif

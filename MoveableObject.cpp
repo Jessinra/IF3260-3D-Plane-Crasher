@@ -77,24 +77,21 @@ float MoveableObject::getSpeed() const
 
 void MoveableObject::move()
 {
-    for (Plane *plane : this->planes)
+    this->position.setPoint(this->position.getY() + this->speed*this->dx, this->position.getY() + this->speed*this->dy);
+}
+
+void MoveableObject::selfRotate(float pivotX, float pivotY, float theta)
+{
+    for (Plane &plane : this->planes)
     {
-        plane->move();
+        plane.selfRotate(pivotX, pivotY, theta);
     }
 }
 
-void MoveableObject::selfRotation(float pivotX, float pivotY, float theta)
+void MoveableObject::selfDilate(float pivotX, float pivotY, float scalingConstant)
 {
-    for (Plane *plane : this->planes)
+    for (Plane &plane : this->planes)
     {
-        plane->selfRotation(pivotX, pivotY, theta);
-    }
-}
-
-void MoveableObject::selfDilated(float pivotX, float pivotY, float scalingConstant)
-{
-    for (Plane *plane : this->planes)
-    {
-        plane->selfDilated(pivotX, pivotY, scalingConstant);
+        plane.selfDilate(pivotX, pivotY, scalingConstant);
     }
 }

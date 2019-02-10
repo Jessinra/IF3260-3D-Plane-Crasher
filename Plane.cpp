@@ -18,7 +18,7 @@ void Plane::reverseHorizontal()
     }
 }
 
-void Plane::setColor(int color)
+void Plane::setColor(unsigned int color)
 {
     this->color = color;
 }
@@ -28,7 +28,7 @@ void Plane::setPriority(int priority)
     this->priority = priority;
 }
 
-int Plane::getColor() const
+unsigned int Plane::getColor() const
 {
     return this->color;
 }
@@ -54,7 +54,7 @@ vector<Line> Plane::getLines() const
 }
 
 
-const vector<Line> &Plane::getRefLines() const
+vector<Line> & Plane::getRefLines() const
 {
     return this->lines;
 }
@@ -92,4 +92,16 @@ void Plane::calculate() {
     this->yMax -= this->yMin;
 
     this->xMin = this->yMin = 0;
+}
+
+const vector<Line> &Plane::getConstRefLines() const {
+    return this->lines;
+}
+
+Point Plane::getLowerRight() const {
+    return Point(xMin, yMin);
+}
+
+Point Plane::getUpperLeft() const {
+    return Point(xMax, yMax);
 }
