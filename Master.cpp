@@ -286,14 +286,14 @@ void Master::drawSolidPlane(int xStart, int yStart, const Plane &plane) {
 }
 
 void Master::drawObject(const Object &object) {
-    for (const Plane &plane : object.getConstRefPlanes()) {
-        drawPlane(0, 0, plane);
+    for (const MoveablePlane &plane : object.getConstRefPlanes()) {
+        drawPlane(object.getRefPos().getX() + plane.getRefPos().getX(), object.getRefPos().getY() + plane.getRefPos().getY(), plane);
     }
 }
 
 void Master::drawSolidObject(const Object &object) {
-    for (const Plane &plane : object.getConstRefPlanes()) {
-        drawSolidPlane(0, 0, plane);
+    for (const MoveablePlane &plane : object.getConstRefPlanes()) {
+        drawSolidPlane(object.getRefPos().getX() + plane.getRefPos().getX(), object.getRefPos().getY() + plane.getRefPos().getY(), plane);
     }
 }
 

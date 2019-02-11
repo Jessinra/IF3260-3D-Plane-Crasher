@@ -99,9 +99,9 @@ const vector<Line> &Plane::getConstRefLines() const {
 }
 
 Point Plane::getLowerRight() const {
-    return Point(xMin, yMin);
+    return Point(xMax, yMax);
 }
 
 Point Plane::getUpperLeft() const {
-    return Point(xMax, yMax);
+    return Point(xMin, yMin);
 }
