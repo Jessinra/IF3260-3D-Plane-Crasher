@@ -24,6 +24,7 @@ Object::Object(float x, float y, std::string filename)
     int xStart, yStart, xEnd, yEnd;
     int planeColor;
     unsigned int colorStart, colorEnd;
+    int offsetX, offsetY;
 
     int nPlane;
     inFile >> nPlane;
@@ -32,6 +33,8 @@ Object::Object(float x, float y, std::string filename)
         inFile >> dec >> nLine;
         inFile >> hex >> planeColor;
         inFile >> priority;
+        inFile >> offsetX;
+        inFile >> offsetY;
 
         vector<Line> lines;
         for (int j = 0; j < nLine; ++j)
@@ -50,7 +53,7 @@ Object::Object(float x, float y, std::string filename)
             lines.push_back(line);
         }
 
-        this->planes.emplace_back(MoveablePlane(x, y, lines, planeColor, priority));
+        this->planes.emplace_back(MoveablePlane(offsetX, offsetY, lines, planeColor, priority));
     }
 
     calculate();
