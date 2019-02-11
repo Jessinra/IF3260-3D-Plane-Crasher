@@ -7,17 +7,17 @@ using namespace std;
 class MoveablePlane : public Plane
 {
 protected:
-  Pixel position;
+  Point position;
 
 public:
   MoveablePlane(float x, float y, const vector<Line> &lines, int color, int priority);
   MoveablePlane(float x, float y, const Plane &plane);
   
-  void setPos(Pixel position);
+  void setPos(Point position);
   void setPos(float x, float y);
   
-  Pixel getPos() const;
-  const Pixel &getRefPos() const;
+  Point getPos() const;
+  const Point & getRefPos() const;
   void calculate() override;
 
   void selfRotate(float pivotX, float pivotY, float theta) override;
