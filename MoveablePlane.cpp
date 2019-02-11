@@ -32,7 +32,7 @@ void MoveablePlane::calculate(){
         this->xMin = min(this->xMin, min(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
         this->xMax = max(this->xMax, max(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
         this->yMin = min(this->yMin, min(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
-        this->yMax = max(this->xMax, max(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
+        this->yMax = max(this->yMax, max(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
     }
 
     for (Line &line : this->lines){
