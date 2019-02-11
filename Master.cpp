@@ -272,7 +272,7 @@ void Master::drawLine(int positionX, int positionY, const Line &line) {
 }
 
 void Master::drawPlane(int xStart, int yStart, const Plane &plane) {
-    for (const Line &line : plane.getRefLines()) {
+    for (const Line &line : plane.getConstRefLines()) {
         drawLine(xStart, yStart, line);
     }
 }

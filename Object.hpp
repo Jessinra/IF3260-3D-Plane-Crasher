@@ -26,7 +26,7 @@ class Object
     Object();
     Object(float x, float y, std::string filename);
 
-    void setPos(Pixel position);
+    void setPos(Point position);
     void setPos(float x, float y);
     void setNPlane(int nPlane);
 

@@ -54,7 +54,7 @@ vector<Line> Plane::getLines() const
 }
 
 
-vector<Line> & Plane::getRefLines() const
+vector<Line> & Plane::getRefLines()
 {
     return this->lines;
 }

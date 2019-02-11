@@ -3,22 +3,22 @@
 
 MoveablePlane::MoveablePlane(float x, float y, const vector<Line> &lines, int color, int priority) : Plane(lines, color, priority)
 {
-    this->position = Pixel(x, y);
+    this->position = Point(x, y);
 }
 
 MoveablePlane::MoveablePlane(float x, float y, const Plane &plane) : Plane(plane)
 {
-    this->position = Pixel(x, y);
+    this->position = Point(x, y);
 }
 
-void MoveablePlane::setPos(Pixel position)
+void MoveablePlane::setPos(Point position)
 {
     this->position = position;
 }
 
 void MoveablePlane::setPos(float x, float y)
 {
-    this->position = Pixel(x, y);
+    this->position = Point(x, y);
 }
 
 void MoveablePlane::calculate(){
@@ -72,10 +72,10 @@ void MoveablePlane::selfDilate(float pivotX, float pivotY, float scalingConstant
     calculate();
 }
 
-Pixel MoveablePlane::getPos() const {
+Point MoveablePlane::getPos() const {
     return this->position;
 }
 
-const Pixel &MoveablePlane::getRefPos() const {
+const Point & MoveablePlane::getRefPos() const {
     return this->position;
 }

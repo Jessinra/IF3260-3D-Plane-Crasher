@@ -57,14 +57,14 @@ Object::Object(float x, float y, std::string filename)
     inFile.close();
 }
 
-void Object::setPos(Pixel position)
+void Object::setPos(Point position)
 {
     this->position = position;
 }
 
 void Object::setPos(float x, float y)
 {
-    this->position = Pixel(x, y);
+    this->position = Point(x, y);
 }
 
 void Object::setNPlane(int nPlane)

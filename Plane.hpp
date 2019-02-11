@@ -33,7 +33,7 @@ class Plane
     Point getUpperLeft() const;
 
     vector<Line> getLines() const;
-    vector<Line> & getRefLines() const;
+    vector<Line> & getRefLines();
     const vector<Line> &getConstRefLines() const;
 
     /* For MovableObject polymorphism purpose */

@@ -51,7 +51,7 @@ void PlaneFiller::initEdgeTable()
 void PlaneFiller::insertLinesToEdgeTable(const Plane &plane)
 {
     int x1, x2, y1, y2;
-    for (const Line &line : plane.getRefLines())
+    for (const Line &line : plane.getConstRefLines())
     {
         x1 = (int)line.getStartPixel().getX();
         x2 = (int)line.getEndPixel().getX();
