@@ -37,9 +37,9 @@
 
 025 100 0xffffff 050 050 0xffffff
 
-050 050 0xffffff 125 050 0xffffff
+050 050 0xffffff 175 050 0xffffff
 
-125 050 0xffffff 200 025 0xffffff
+175 050 0xffffff 200 025 0xffffff
 
 4 0x0000ff 5 000 025
 
@@ -61,8 +61,7 @@
 
 150 025 0xffffff 025 025 0xffffff
 
-4 0x0000ff 7 175 025
-
+4 0x0000ff 7 150 000
 175 050 0xffffff 150 025 0xffffff
 
 150 025 0xffffff 175 000 0xffffff
