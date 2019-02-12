@@ -37,6 +37,7 @@ class Object
     const Point&getRefPos() const;
     Point getUpperLeft() const;
     Point getLowerRight() const;
+    void sortPriority();
 
     void reverseHorizontal(); // TODO
     bool outOfWindow(int height, int width) const;

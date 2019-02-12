@@ -57,6 +57,7 @@ Object::Object(float x, float y, std::string filename)
     }
 
     calculate();
+    sortPriority();
 
     inFile.close();
 }
@@ -143,4 +144,10 @@ Point Object::getUpperLeft() const {
 
 Point Object::getLowerRight() const {
     return Point(xMax, yMax);
+}
+
+void Object::sortPriority() {
+    sort(planes.begin(), planes.end(), [this](const MoveablePlane &a, const MoveablePlane &b) -> bool{
+        return a.getPriority() < b.getPriority();
+    });
 }
