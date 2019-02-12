@@ -4,6 +4,7 @@
 MoveablePlane::MoveablePlane(float x, float y, const vector<Line> &lines, int color, int priority) : Plane(lines, color, priority)
 {
     this->position = Point(x, y);
+    calculate();
 }
 
 MoveablePlane::MoveablePlane(float x, float y, const Plane &plane) : Plane(plane)

@@ -25,7 +25,7 @@ class Object
     void setPos(Point position);
     void setPos(float x, float y);
 
-    void calculate();
+    virtual void calculate();
 
     vector<MoveablePlane> getPlanes() const;
     Point getPos() const;
