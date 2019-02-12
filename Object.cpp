@@ -32,7 +32,7 @@ Object::Object(float x, float y, std::string filename)
     {
         inFile >> dec >> nLine;
         inFile >> hex >> planeColor;
-        inFile >> priority;
+        inFile >> dec >> priority;
         inFile >> offsetX;
         inFile >> offsetY;
 
