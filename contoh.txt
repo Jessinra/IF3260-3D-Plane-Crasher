@@ -1,6 +1,6 @@
 nplanes
 
-nlines colorPlane Priority
+nlines colorPlane Priority offsetX offsetY
 //iterate as much as nlines
 XStart YStart ColorStart XEnd YEnd ColorEnd
 XStart YStart ColorStart XEnd YEnd ColorEnd
