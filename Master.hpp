@@ -28,7 +28,7 @@ class Master
     struct fb_fix_screeninfo finfo;
     int fbfd;
     int screensize;
-    char *fbp;
+    char *fbp, *buffer;
     int xmultiplier, ymultiplier;
     int xadder, yadder;
 
@@ -58,8 +58,9 @@ class Master
 
   public:
     Master(int height, int width);
-
+    ~Master();
     void displayVinfo();
+    void flush();
 
     bool isInsideWindow(int x, int y);
     void assignColor(int x, int y, unsigned int color);
@@ -76,10 +77,9 @@ class Master
     void drawPixel(int xStart, int yStart, const Pixel &pixel);
     void drawPixels(int xStart, int yStart, vector<Pixel> pixels);
     void drawLine(int positionX, int positionY, const Line &line);
-    static void drawLine(vector<vector<unsigned int>> &buffer, const Line &line);
-    
-    void drawPlane(const Plane &plane);
-    void drawSolidPlane(const Plane &plane);
+
+    void drawPlane(int xStart, int yStart, const Plane &plane);
+    void drawSolidPlane(int xStart, int yStart, const Plane &plane);
 
     void drawObject(const Object &object);
     void drawSolidObject(const Object &object);

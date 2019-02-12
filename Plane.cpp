@@ -1,5 +1,7 @@
 
 #include "Plane.hpp"
+#include <iostream>
+using namespace std;
 
 Plane::Plane(const vector<Line> &lines, int color, int priority)
 {
@@ -18,7 +20,7 @@ void Plane::reverseHorizontal()
     }
 }
 
-void Plane::setColor(int color)
+void Plane::setColor(unsigned int color)
 {
     this->color = color;
 }
@@ -28,7 +30,7 @@ void Plane::setPriority(int priority)
     this->priority = priority;
 }
 
-int Plane::getColor() const
+unsigned int Plane::getColor() const
 {
     return this->color;
 }
@@ -54,7 +56,7 @@ vector<Line> Plane::getLines() const
 }
 
 
-const vector<Line> &Plane::getRefLines() const
+vector<Line> & Plane::getRefLines()
 {
     return this->lines;
 }
@@ -80,7 +82,7 @@ void Plane::calculate() {
         this->xMin = min(this->xMin, min(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
         this->xMax = max(this->xMax, max(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
         this->yMin = min(this->yMin, min(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
-        this->yMax = max(this->xMax, max(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
+        this->yMax = max(this->yMax, max(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
     }
 
     for (Line &line : this->lines){
@@ -92,4 +94,16 @@ void Plane::calculate() {
     this->yMax -= this->yMin;
 
     this->xMin = this->yMin = 0;
+}
+
+const vector<Line> &Plane::getConstRefLines() const {
+    return this->lines;
+}
+
+Point Plane::getLowerRight() const {
+    return Point(xMax, yMax);
+}
+
+Point Plane::getUpperLeft() const {
+    return Point(xMin, yMin);
 }

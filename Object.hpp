@@ -13,32 +13,31 @@ using namespace std;
 class Object
 {
   protected:
-    Pixel position;
-    vector<Plane*> planes;
+    Point position;
+    vector<MoveablePlane> planes;
 
-    int nPlane;
-    int width;
-    int height;
+    float xMin, yMin, xMax, yMax;
 
   public:
     Object();
     Object(float x, float y, std::string filename);
 
-    void setPos(Pixel position);
+    void setPos(Point position);
     void setPos(float x, float y);
-    void setNPlane(int nPlane);
 
-    void setWidth();
-    void setHeight();
+    virtual void calculate();
 
-    vector<Plane*> getPlanes() const;
-    Pixel getPos() const;
-    int getNPlane() const;
+    vector<MoveablePlane> getPlanes() const;
+    Point getPos() const;
     int getWidth() const;
     int getHeight() const;
 
-    const vector<Plane*> &getRefPlanes() const;
-    const Pixel &getRefPos() const;
+    vector<MoveablePlane> & getRefPlanes();
+    const vector<MoveablePlane> & getConstRefPlanes() const;
+    const Point&getRefPos() const;
+    Point getUpperLeft() const;
+    Point getLowerRight() const;
+    void sortPriority();
 
     void reverseHorizontal(); // TODO
     bool outOfWindow(int height, int width) const;

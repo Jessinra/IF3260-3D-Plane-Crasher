@@ -51,7 +51,7 @@ void PlaneFiller::initEdgeTable()
 void PlaneFiller::insertLinesToEdgeTable(const Plane &plane)
 {
     int x1, x2, y1, y2;
-    for (const Line &line : plane.getRefLines())
+    for (const Line &line : plane.getConstRefLines())
     {
         x1 = (int)line.getStartPixel().getX();
         x2 = (int)line.getEndPixel().getX();
@@ -105,7 +105,7 @@ void PlaneFiller::storeEdgeInTuple(EdgeTableTuple &receiver, int yMax, int xMin,
 {
     // both used for edgetable and active edge table..
     // The edge tuple sorted in increasing yMax and x of the lower end.
-    receiver.buckets.push_back(EdgeBucket(yMax, xMin, inverseGradient));
+    receiver.buckets.emplace_back(yMax, xMin, inverseGradient);
 
     // sort the buckets
     insertionSort(receiver);
@@ -151,17 +151,13 @@ vector<Line> PlaneFiller::getPlaneFillerLines(const Plane &plane)
     insertLinesToEdgeTable(plane);
 
     // Get plane color
-    const int sampleColor = plane.getColor();
-
-    // Initialize drawing position
-    int positionY = plane.getRefPos().getY();
-    int positionX = plane.getRefPos().getX();
+    const unsigned int sampleColor = plane.getColor();
 
     // Start from yMin 0 Repeat until last yMin:
     for (int i = 0; i < plane.getHeight(); i++) //4. Increment y by 1 (next scan line)
     {
         // 1. Move from EdgeTuple bucket y to the
-        // ActiveEdgeTuple those edges whose ymin = y (entering edges)
+        // ActiveEdgeTuple those edges whose yMin = y (entering edges)
         for (int j = 0; j < EdgeTable[i].buckets.size(); j++)
         {
             storeEdgeInTuple(ActiveEdgeTuple,
@@ -255,7 +251,7 @@ vector<Line> PlaneFiller::getPlaneFillerLines(const Plane &plane)
                     Pixel pixelStart = Pixel(x1, i, sampleColor);
                     Pixel pixelEnd = Pixel(x2, i, sampleColor);
 
-                    lineToDraw.push_back(Line(pixelStart, pixelEnd));
+                    lineToDraw.emplace_back(pixelStart, pixelEnd);
                 }
             }
         }

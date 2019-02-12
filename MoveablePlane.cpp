@@ -3,22 +3,23 @@
 
 MoveablePlane::MoveablePlane(float x, float y, const vector<Line> &lines, int color, int priority) : Plane(lines, color, priority)
 {
-    this->position = Pixel(x, y);
+    this->position = Point(x, y);
+    calculate();
 }
 
 MoveablePlane::MoveablePlane(float x, float y, const Plane &plane) : Plane(plane)
 {
-    this->position = Pixel(x, y);
+    this->position = Point(x, y);
 }
 
-void MoveablePlane::setPos(Pixel position)
+void MoveablePlane::setPos(Point position)
 {
     this->position = position;
 }
 
 void MoveablePlane::setPos(float x, float y)
 {
-    this->position = Pixel(x, y);
+    this->position = Point(x, y);
 }
 
 void MoveablePlane::calculate(){
@@ -32,7 +33,7 @@ void MoveablePlane::calculate(){
         this->xMin = min(this->xMin, min(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
         this->xMax = max(this->xMax, max(lines[i].getRefStartPixel().getX(), lines[i].getRefEndPixel().getX()));
         this->yMin = min(this->yMin, min(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
-        this->yMax = max(this->xMax, max(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
+        this->yMax = max(this->yMax, max(lines[i].getRefStartPixel().getY(), lines[i].getRefEndPixel().getY()));
     }
 
     for (Line &line : this->lines){
@@ -50,9 +51,6 @@ void MoveablePlane::calculate(){
 
 void MoveablePlane::selfRotate(float pivotX, float pivotY, float theta)
 {
-    pivotX -= this->position.getX();
-    pivotY -= this->position.getY();
-
     for (Line &line : this->lines)
     {
         line.setStartPixel(line.getStartPixel().rotation(pivotX, pivotY, theta));
@@ -72,10 +70,10 @@ void MoveablePlane::selfDilate(float pivotX, float pivotY, float scalingConstant
     calculate();
 }
 
-Pixel MoveablePlane::getPos() const {
+Point MoveablePlane::getPos() const {
     return this->position;
 }
 
-const Pixel &MoveablePlane::getRefPos() const {
+const Point & MoveablePlane::getRefPos() const {
     return this->position;
 }

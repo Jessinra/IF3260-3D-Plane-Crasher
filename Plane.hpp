@@ -13,7 +13,7 @@ class Plane
 
     float xMin, yMin, xMax, yMax;
 
-    int color;
+    unsigned int color;
     int priority;
 
   public:
@@ -21,18 +21,20 @@ class Plane
 
     void reverseHorizontal();
 
-    void setColor(int color);
+    void setColor(unsigned int color);
     void setPriority(int priority);
     virtual void calculate();
 
-    int getColor() const;
+    unsigned int getColor() const;
     int getPriority() const;
     int getWidth() const;
     int getHeight() const;
+    Point getLowerRight() const;
+    Point getUpperLeft() const;
 
     vector<Line> getLines() const;
-
-    const vector<Line> &getRefLines() const;
+    vector<Line> & getRefLines();
+    const vector<Line> &getConstRefLines() const;
 
     /* For MovableObject polymorphism purpose */
     virtual void selfRotate(float pivotX, float pivotY, float theta);

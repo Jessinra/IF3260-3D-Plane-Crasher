@@ -2,3 +2,5 @@ main
 .vscode/
 cmake-build-debug/
 .idea/
+*.o
+error*
