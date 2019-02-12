@@ -48,9 +48,9 @@ protected:
 
 public:
     Runner(int h = 700, int w = 1000) : Master(h, w) {
-        revpesawat = Object(0, 0, "Asset/object_plane.txt");
-        revpesawat.reverseHorizontal();
-        pesawat = Object(0, 0, "Asset/object_plane.txt");
+        revpesawat = Object(0, 0, "Asset/object_plane3d_right.txt");
+//        revpesawat.reverseHorizontal();
+        pesawat = Object(0, 0, "Asset/object_plane3d_left.txt");
         meriam = Object(0, 0, "Asset/object_gun.txt");
         peluru = Object(0, 0, "Asset/object_star.txt");
         puing1 = Object(0, 0, "Asset/object_plane_part1.txt");

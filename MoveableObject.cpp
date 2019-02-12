@@ -6,6 +6,7 @@ MoveableObject::MoveableObject(float x, float y, const std::string &filename) : 
     this->dx = 0;
     this->dy = 0;
     this->speed = 1;
+    calculate();
 }
 
 MoveableObject::MoveableObject(float x, float y, float dx, float dy, float speed, const std::string &filename) : Object(x, y, filename)
@@ -21,6 +22,8 @@ MoveableObject::MoveableObject(float x, float y, float dx, float dy, float speed
     }
 
     this->speed = speed;
+
+    calculate();
 }
 
 MoveableObject::MoveableObject(const Object &obj) : Object(obj)
