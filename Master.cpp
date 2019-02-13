@@ -19,7 +19,7 @@ Master::Master(int height, int width) {
 }
 
 Master::~Master() {
-    free(buffer);
+    free(this->buffer);
 }
 
 void Master::setDimension(int height, int width) {
@@ -298,5 +298,5 @@ void Master::drawSolidObject(const Object &object) {
 }
 
 void Master::flush() {
-    memcpy(fbp, buffer, this->screensize);
+    memcpy(fbp, buffer, (yend * ymultiplier + yadder));
 }

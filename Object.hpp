@@ -25,7 +25,7 @@ class Object
     void setPos(Point position);
     void setPos(float x, float y);
 
-    void calculate();
+    virtual void calculate();
 
     vector<MoveablePlane> getPlanes() const;
     Point getPos() const;
@@ -37,6 +37,7 @@ class Object
     const Point&getRefPos() const;
     Point getUpperLeft() const;
     Point getLowerRight() const;
+    void sortPriority();
 
     void reverseHorizontal(); // TODO
     bool outOfWindow(int height, int width) const;
