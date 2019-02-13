@@ -47,7 +47,7 @@ class Runner : public Master {
 protected:
     Object pesawat, meriam, peluru, puing1, puing2, puing3;
     Object revpesawat, revpuing1, revpuing2, revpuing3;
-    Object ledakan, misil, hati;
+    Object ledakan, misil, hati, roda;
 
 public:
     Runner(int h = WINDOWHEIGHT, int w = WINDOWWIDTH) : Master(h, w) {
@@ -58,15 +58,16 @@ public:
         puing1 = Object(0, 0, "Asset/object_plane3d_part_front.txt");
         puing2 = Object(0, 0, "Asset/object_plane3d_part_wing.txt");
         puing3 = Object(0, 0, "Asset/object_plane3d_part_back.txt");
-        revpuing1 = Object(0, 0, "Asset/object_plane_part1.txt");
+        revpuing1 = Object(0, 0, "Asset/object_plane3d_right_part_front.txt");
         revpuing1.reverseHorizontal();
-        revpuing2 = Object(0, 0, "Asset/object_plane_part2.txt");
+        revpuing2 = Object(0, 0, "Asset/object_plane3d_right_part_wing.txt");
         revpuing2.reverseHorizontal();
-        revpuing3 = Object(0, 0, "Asset/object_plane_part3.txt");
+        revpuing3 = Object(0, 0, "Asset/object_plane3d_right_part_back.txt");
         revpuing3.reverseHorizontal();
         ledakan = Object(0, 0, "Asset/object_ledakan.txt");
         misil = Object(0, 0, "Asset/object_misil.txt");
         hati = Object(0, 0, "Asset/object_life.txt");
+        roda = Object(0, 0, "Asset/object_wheel.txt");
     }
 
     void start() {
@@ -92,6 +93,10 @@ public:
         vector<MoveableObject> lifes;
         MoveableObject life = hati;
         life.selfDilate(0, 0, 0.4);
+        MoveableObject wheel = roda;
+        wheel.selfDilate(0, 0, 3);
+        vector<pair<MoveableObject, float> > wheelup, wheeldown;
+        vector<MoveableObject> wheelconst;
         for(int i=0;i<MAXHEALTH;++i){
             life.setPos(i * (life.getWidth() + 5) + 5, yend - life.getHeight() - 5);
             lifes.push_back(life);
@@ -134,6 +139,18 @@ public:
                 drawObject(movableObject);
                 drawSolidObject(movableObject);
             }
+            for (pair<MoveableObject, float> &movableObject : wheeldown) {
+                drawObject(movableObject.first);
+                drawSolidObject(movableObject.first);
+            }
+            for (pair<MoveableObject, float> &movableObject : wheelup) {
+                drawObject(movableObject.first);
+                drawSolidObject(movableObject.first);
+            }
+            for (MoveableObject &movableObject : wheelconst) {
+                drawObject(movableObject);
+                drawSolidObject(movableObject);
+            }
 
             // move and rotate :/
             if (deg != 0) {
@@ -164,25 +181,32 @@ public:
                             }),
                             explosion.end());
 
+
             vector<char> checkr(rplanes.size(), 1);
             vector<char> checkp(planes.size(), 1);
             vector<char> checkd(debris.size(), 1);
             vector<char> checkm(missile.size(), 1);
+            vector<char> checkwd(wheeldown.size(), 1);
+            vector<char> checkwu(wheelup.size(), 1);
+            vector<char> checkwc(wheelconst.size(), 1);
             vector<MoveableObject> tmpr; // rplane
             vector<MoveableObject> tmpp; // plane
             vector<MoveableObject> tmpb; // bullet
             vector<MoveableObject> tmpd; // debris
             vector<MoveableObject> tmpm; // missile
-            for (int i=0;i<planes.size();++i) {
-                planes[i].move();
-                if(planes[i].outOfWindow(WINDOWHEIGHT, WINDOWWIDTH)){
-                    checkp[i] = 0;
+            vector<pair<MoveableObject, float> > tmpwd; // wheel down
+            vector<pair<MoveableObject, float> > tmpwu; // wheel up
+            vector<MoveableObject> tmpwc; // wheel constant
+            for (int j=0;j<planes.size();++j) {
+                planes[j].move();
+                if(planes[j].outOfWindow(WINDOWHEIGHT, WINDOWWIDTH)){
+                    checkp[j] = 0;
                 }
             }
-            for (int i=0;i<rplanes.size();++i) {
-                rplanes[i].move();
-                if(rplanes[i].outOfWindow(WINDOWHEIGHT, WINDOWWIDTH)){
-                    checkr[i] = 0;
+            for (int j=0;j<rplanes.size();++j) {
+                rplanes[j].move();
+                if(rplanes[j].outOfWindow(WINDOWHEIGHT, WINDOWWIDTH)){
+                    checkr[j] = 0;
                 }
             }
             for (int j = 0; j < debris.size(); ++j) {
@@ -205,6 +229,41 @@ public:
                     }
                 }
             }
+            for (int j = 0; j < wheeldown.size(); ++j) {
+                wheeldown[j].first.move();
+                if (wheeldown[j].first.outOfWindow(yend, xend)) {
+                    checkwd[j] = 0;
+                }
+                if(wheeldown[j].first.getRefPos().getY() + wheeldown[j].first.getHeight() >= yend){
+                    checkwd[j] = 0;
+                    float maxheight = (yend - wheeldown[j].second - wheeldown[j].first.getHeight())*0.6f;
+                    if(maxheight < 1){
+                        wheeldown[j].first.setVector(wheeldown[j].first.getDx(), 0);
+                        tmpwc.push_back(wheeldown[j].first);
+                    }
+                    else{
+                        wheeldown[j].first.setVector(wheeldown[j].first.getDx(), -wheeldown[j].first.getDy());
+                        tmpwu.push_back({wheeldown[j].first, yend - maxheight - wheeldown[j].first.getHeight()});
+                    }
+                }
+            }
+            for (int j = 0; j < wheelup.size(); ++j) {
+                wheelup[j].first.move();
+                if (wheelup[j].first.outOfWindow(yend, xend)) {
+                    checkwu[j] = 0;
+                }
+                if(wheelup[j].first.getRefPos().getY() <= wheelup[j].second){
+                    checkwu[j] = 0;
+                    wheelup[j].first.setVector(wheeldown[j].first.getDx(), -wheeldown[j].first.getDy());
+                    tmpwd.push_back(wheelup[j]);
+                }
+            }
+            for (int j = 0; j < wheelconst.size(); ++j) {
+                wheelconst[j].move();
+                if (wheelconst[j].outOfWindow(yend, xend)) {
+                    checkwc[j] = 0;
+                }
+            }
 
             // very slow shit
             for (const MoveableObject &objb : bullets) {
@@ -212,74 +271,82 @@ public:
                 for (int j = 0; j < planes.size(); ++j) {
                     if (overlap(planes[j], objb)) {
                         // isi pecahan
-                        // if (checkp[j]){
                         MoveableObject sp = ledakan;
-                        sp.setPos(Point(planes[j].getRefPos().getX() + 100,
-                                        planes[j].getRefPos().getY()));
+                        sp.setPos(planes[j].getRefPos().getX() + 100,
+                                planes[j].getRefPos().getY());
                         explosion.emplace_back(sp, explosiontime);
                         sp = puing2;
-                        sp.setPos(Point(planes[j].getRefPos().getX() + 50,
-                                        planes[j].getRefPos().getY() + 75));
+                        sp.setPos(planes[j].getRefPos().getX() + 50,
+                                planes[j].getRefPos().getY() + 75);
                         sp.setVector((planes[j].getDx() < 0 ? -1 : 1) *
                                      sin(45 * PI / 180),
                                      cos(45 * PI / 180));
                         sp.setSpeed(2);
                         tmpd.push_back(sp);
                         sp = puing1;
-                        sp.setPos(Point(planes[j].getRefPos().getX(),
-                                        planes[j].getRefPos().getY() + 25));
+                        sp.setPos(planes[j].getRefPos().getX(),
+                                planes[j].getRefPos().getY() + 25);
                         sp.setVector((planes[j].getDx() < 0 ? -1 : 1) *
                                      sin(60 * PI / 180),
                                      cos(60 * PI / 180));
                         sp.setSpeed(2);
                         tmpd.push_back(sp);
                         sp = puing3;
-                        sp.setPos(Point(planes[j].getRefPos().getX() + 50,
-                                        planes[j].getRefPos().getY()));
+                        sp.setPos(planes[j].getRefPos().getX() + 50,
+                                planes[j].getRefPos().getY());
                         sp.setVector((planes[j].getDx() < 0 ? -1 : 1) *
                                      sin(30 * PI / 180),
                                      cos(30 * PI / 180));
                         sp.setSpeed(2);
                         tmpd.push_back(sp);
+                        sp = wheel;
+                        sp.setPos(xend - (planes[j].getRefPos().getX() - planes[j].getWidth())/2.0f,
+                                planes[j].getRefPos().getY() + planes[j].getHeight() - wheel.getHeight()/2.0f);
+                        sp.setVector(-1, 2);
+                        sp.setSpeed(2);
+                        tmpwd.push_back({sp, sp.getRefPos().getY()});
                         checkp[j] = 0;
-                        // }
                         bisa = false;
                     }
                 }
                 for (int j = 0; j < rplanes.size(); ++j) {
                     if (overlap(rplanes[j], objb)) {
                         // isi pecahan
-                        // if (checkp[j]){
                         MoveableObject sp = ledakan;
-                        sp.setPos(Point(rplanes[j].getRefPos().getX() + 100,
-                                        rplanes[j].getRefPos().getY()));
+                        sp.setPos(rplanes[j].getRefPos().getX() + 100,
+                                rplanes[j].getRefPos().getY());
                         explosion.emplace_back(sp, explosiontime);
-                        sp = revpuing1;
-                        sp.setPos(Point(rplanes[j].getRefPos().getX() + 150,
-                                        rplanes[j].getRefPos().getY()));
-                        sp.setVector((rplanes[j].getDx() < 0 ? -1 : 1) *
-                                     sin(60 * PI / 180),
-                                     cos(60 * PI / 180));
-                        sp.setSpeed(2);
-                        tmpd.push_back(sp);
                         sp = revpuing2;
-                        sp.setPos(Point(rplanes[j].getRefPos().getX() + 100,
-                                        rplanes[j].getRefPos().getY() + 50));
+                        sp.setPos(rplanes[j].getRefPos().getX() + 50,
+                                  rplanes[j].getRefPos().getY() + 75);
                         sp.setVector((rplanes[j].getDx() < 0 ? -1 : 1) *
                                      sin(45 * PI / 180),
                                      cos(45 * PI / 180));
                         sp.setSpeed(2);
                         tmpd.push_back(sp);
+                        sp = revpuing1;
+                        sp.setPos(rplanes[j].getRefPos().getX() + 100,
+                                rplanes[j].getRefPos().getY() + 25);
+                        sp.setVector((rplanes[j].getDx() < 0 ? -1 : 1) *
+                                     sin(60 * PI / 180),
+                                     cos(60 * PI / 180));
+                        sp.setSpeed(2);
+                        tmpd.push_back(sp);
                         sp = revpuing3;
-                        sp.setPos(Point(rplanes[j].getRefPos().getX(),
-                                        rplanes[j].getRefPos().getY()));
+                        sp.setPos(rplanes[j].getRefPos().getX(),
+                                rplanes[j].getRefPos().getY());
                         sp.setVector((rplanes[j].getDx() < 0 ? -1 : 1) *
                                      sin(30 * PI / 180),
                                      cos(30 * PI / 180));
                         sp.setSpeed(2);
                         tmpd.push_back(sp);
+                        sp = wheel;
+                        sp.setPos(xend - (planes[j].getRefPos().getX() - planes[j].getWidth())/2.0f,
+                                  planes[j].getRefPos().getY() + planes[j].getHeight()  + wheel.getHeight()/2.0f);
+                        sp.setVector(1, 2);
+                        sp.setSpeed(2);
+                        tmpwd.push_back({sp, sp.getRefPos().getY()});
                         checkr[j] = 0;
-                        // }
                         bisa = false;
                     }
                 }
@@ -316,11 +383,29 @@ public:
                     tmpm.push_back(missile[j]);
                 }
             }
+            for (int j = 0; j < wheeldown.size(); ++j) {
+                if (checkwd[j]) {
+                    tmpwd.push_back(wheeldown[j]);
+                }
+            }
+            for (int j = 0; j < wheelup.size(); ++j) {
+                if (checkwu[j]) {
+                    tmpwu.push_back(wheelup[j]);
+                }
+            }
+            for (int j = 0; j < wheelconst.size(); ++j) {
+                if (checkwc[j]) {
+                    tmpwc.push_back(wheelconst[j]);
+                }
+            }
             rplanes = tmpr;
             planes = tmpp;
             bullets = tmpb;
             debris = tmpd;
             missile = tmpm;
+            wheeldown = tmpwd;
+            wheelup = tmpwu;
+            wheelconst = tmpwc;
 
             /* Spawn Section */
             if (shoot > 0) {
