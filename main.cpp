@@ -59,11 +59,11 @@ public:
         puing2 = Object(0, 0, "Asset/object_plane3d_part_wing.txt");
         puing3 = Object(0, 0, "Asset/object_plane3d_part_back.txt");
         revpuing1 = Object(0, 0, "Asset/object_plane3d_right_part_front.txt");
-        revpuing1.reverseHorizontal();
+        // revpuing1.reverseHorizontal();
         revpuing2 = Object(0, 0, "Asset/object_plane3d_right_part_wing.txt");
-        revpuing2.reverseHorizontal();
+        // revpuing2.reverseHorizontal();
         revpuing3 = Object(0, 0, "Asset/object_plane3d_right_part_back.txt");
-        revpuing3.reverseHorizontal();
+        // revpuing3.reverseHorizontal();
         ledakan = Object(0, 0, "Asset/object_ledakan.txt");
         misil = Object(0, 0, "Asset/object_misil.txt");
         hati = Object(0, 0, "Asset/object_life.txt");
