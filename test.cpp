@@ -11,9 +11,9 @@ protected:
 public:
     Runner(int h = 700, int w = 1000) : Master(h, w) {
         plane = Object(0, 0, "Asset/object_plane3d_right.txt");
-        part1 = Object(200+300, 200 + 25, "Asset/object_plane3d_right_part_front.txt");
-        part2 = Object(50+300, 200 + 75, "Asset/object_plane3d_right_part_wing.txt");
-        part3 = Object(0+300, 200, "Asset/object_plane3d_right_part_back.txt");
+        part1 = Object(100, 200 + 25, "Asset/object_plane3d_right_part_front.txt");
+        part2 = Object(50, 200 + 75, "Asset/object_plane3d_right_part_wing.txt");
+        part3 = Object(0, 200, "Asset/object_plane3d_right_part_back.txt");
     }
 
     void start() {
