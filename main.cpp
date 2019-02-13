@@ -254,7 +254,7 @@ public:
                 }
                 if(wheelup[j].first.getRefPos().getY() <= wheelup[j].second){
                     checkwu[j] = 0;
-                    wheelup[j].first.setVector(wheeldown[j].first.getDx(), -wheeldown[j].first.getDy());
+                    wheelup[j].first.setVector(wheelup[j].first.getDx(), -wheelup[j].first.getDy());
                     tmpwd.push_back(wheelup[j]);
                 }
             }
