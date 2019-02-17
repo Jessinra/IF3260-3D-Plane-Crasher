@@ -49,7 +49,7 @@ protected:
     Object pesawat, meriam, peluru, puing1, puing2, puing3;
     Object revpesawat, revpuing1, revpuing2, revpuing3;
     Object ledakan, misil, hati, roda;
-    Object helicopter;
+    Object helicopter, baling1, baling2;
 
 public:
     Runner(int h = WINDOWHEIGHT, int w = WINDOWWIDTH) : Master(h, w) {
@@ -71,6 +71,8 @@ public:
         hati = Object(0, 0, "Asset/object_life.txt");
         roda = Object(0, 0, "Asset/object_wheel.txt");
         helicopter = Object(0, 0, "Asset/object_helicopter_body.txt");
+        baling1 = Object(0, 0, "Asset/object_propeller_100x30.txt");
+        baling2 = Object(0, 0, "Asset/object_propeller_150x30.txt");
     }
 
     void start() {
@@ -86,7 +88,9 @@ public:
         peluru.setPos(
                 Point((xend - peluru.getWidth()) / 2.0f,
                       yend - meriam.getHeight() - peluru.getHeight() - 2));
-        helicopter.setPos(Point((xend - helicopter.getWidth()) / 2.0f,
+        helicopter.setPos(Point((xend - helicopter.getWidth() - 2*baling1.getWidth()) / 2.0f,
+            (yend - helicopter.getHeight() - baling1.getHeight()/2)/2.0f));
+        baling1.setPos(Point((xend - helicopter.getWidth()) / 2.0f,
             (yend - helicopter.getHeight())/2.0f));
         vector<MoveableObject> planes, rplanes;
         vector<MoveableObject> debris;
@@ -103,6 +107,7 @@ public:
         vector<pair<MoveableObject, float> > wheelup, wheeldown;
         vector<MoveableObject> wheelconst;
         MoveableObject moveHelicopter = MoveableObject(0, -2, 1, helicopter);
+        MoveableObject propeller = MoveableObject(0, -2, 1, baling1);
         moveHelicopter.selfDilate(0, 0, 4);
         for(int i=0;i<MAXHEALTH;++i){
             life.setPos(i * (life.getWidth() + 5) + 5, yend - life.getHeight() - 5);
@@ -158,9 +163,10 @@ public:
             //     drawObject(movableObject);
             //     drawSolidObject(movableObject);
             // }
+            drawObject(propeller);
+            drawSolidObject(propeller);
             drawObject(moveHelicopter);
             drawSolidObject(moveHelicopter);
-
             // move and rotate :/
             if (deg != 0) {
                 if (deg > 0) {
@@ -208,11 +214,15 @@ public:
             vector<MoveableObject> tmpwc; // wheel constant
             
             moveHelicopter.move();
+            propeller.move();
+            propeller.selfRotate(propeller.getRefPos().getX() + propeller.getWidth()/2,
+                propeller.getRefPos().getY() + propeller.getHeight()/2, 5);
             if(helicopterTop) {
                 if (moveHelicopter.getPos().getY() <= 20) {
                     moveHelicopter.selfRotate(moveHelicopter.getRefPos().getX() + moveHelicopter.getWidth()/2,
                         moveHelicopter.getRefPos().getY() + moveHelicopter.getHeight()/2, 180);
                     moveHelicopter.setVector(0, 2);
+                    propeller.setVector(0, 2);
                     helicopterTop = false;
                 }               
             } else {
@@ -220,6 +230,7 @@ public:
                     moveHelicopter.selfRotate(moveHelicopter.getRefPos().getX() + moveHelicopter.getWidth()/2,
                         moveHelicopter.getRefPos().getY() + moveHelicopter.getHeight()/2, 180);
                     moveHelicopter.setVector(0, -2);
+                    propeller.setVector(0, -2);
                     helicopterTop = true;
                 }
             }
