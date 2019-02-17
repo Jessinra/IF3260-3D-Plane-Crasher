@@ -5,24 +5,32 @@
 
 using namespace std;
 
-class Runner : public Master
-{
+class Runner : public Master {
 protected:
-    Object test;
-  public:
+    Object plane, part1, part2, part3;
+public:
     Runner(int h = 700, int w = 1000) : Master(h, w) {
-        test = Object(0, 0, "Asset/object_wheel.txt");
+        plane = Object(0, 0, "Asset/object_plane3d_right.txt");
+        part1 = Object(200+300, 200 + 25, "Asset/object_plane3d_right_part_front.txt");
+        part2 = Object(50+300, 200 + 75, "Asset/object_plane3d_right_part_wing.txt");
+        part3 = Object(0+300, 200, "Asset/object_plane3d_right_part_back.txt");
     }
-    void start(){
+
+    void start() {
         clearWindow();
-        drawObject(test);
-        drawSolidObject(test);
+        drawObject(plane);
+        drawSolidObject(plane);
+        drawObject(part2);
+        drawSolidObject(part2);
+        drawObject(part1);
+        drawSolidObject(part1);
+        drawObject(part3);
+        drawSolidObject(part3);
         flush();
     }
 };
 
-int main()
-{
+int main() {
     Runner run;
     run.start();
     return 0;
