@@ -48,6 +48,7 @@ protected:
     Object pesawat, meriam, peluru, puing1, puing2, puing3;
     Object revpesawat, revpuing1, revpuing2, revpuing3;
     Object ledakan, misil, hati, roda;
+    Object helicopter;
 
 public:
     Runner(int h = WINDOWHEIGHT, int w = WINDOWWIDTH) : Master(h, w) {
@@ -68,6 +69,7 @@ public:
         misil = Object(0, 0, "Asset/object_misil.txt");
         hati = Object(0, 0, "Asset/object_life.txt");
         roda = Object(0, 0, "Asset/object_wheel.txt");
+        helicopter = Object(0, 0, "Asset/object_helicopter_body.txt");
     }
 
     void start() {
@@ -83,6 +85,8 @@ public:
         peluru.setPos(
                 Point((xend - peluru.getWidth()) / 2.0f,
                       yend - meriam.getHeight() - peluru.getHeight() - 2));
+        helicopter.setPos(Point((xend - helicopter.getWidth()) / 2.0f,
+            (yend - helicopter.getHeight())/2.0f));
         vector<MoveableObject> planes, rplanes;
         vector<MoveableObject> debris;
         vector<MoveableObject> bullets;
@@ -97,6 +101,8 @@ public:
         wheel.selfDilate(0, 0, 3);
         vector<pair<MoveableObject, float> > wheelup, wheeldown;
         vector<MoveableObject> wheelconst;
+        MoveableObject moveHelicopter = MoveableObject(0, -2, 1, helicopter);
+        moveHelicopter.selfDilate(0, 0, 4);
         for(int i=0;i<MAXHEALTH;++i){
             life.setPos(i * (life.getWidth() + 5) + 5, yend - life.getHeight() - 5);
             lifes.push_back(life);
@@ -105,52 +111,54 @@ public:
             // draw
             clearWindow();
 
-            drawObject(cannon);
-            drawSolidObject(cannon);
-            for (MoveableObject &movableObject : lifes) {
-                drawObject(movableObject);
-                drawSolidObject(movableObject);
-            }
-            for (MoveableObject &movableObject : planes) {
-                drawObject(movableObject);
-                drawSolidObject(movableObject);
-            }
-            for (MoveableObject &movableObject : rplanes) {
-                drawObject(movableObject);
-                drawSolidObject(movableObject);
-            }
-            for (MoveableObject &movableObject : debris) {
-                drawObject(movableObject);
-                drawSolidObject(movableObject);
-            }
-            for (MoveableObject &movableObject : bullets) {
-                drawObject(movableObject);
-                drawSolidObject(movableObject);
-            }
-            for (pair<MoveableObject, int> &movableObject : explosion) {
-                float middleX_explosion = movableObject.first.getWidth() / 2.0f;
-                float middleY_explosion = movableObject.first.getHeight() / 2.0f;
-                movableObject.first.selfDilate(middleX_explosion, middleY_explosion, 1.05);
-                drawObject(movableObject.first);
-                drawSolidObject(movableObject.first);
-                movableObject.second--;
-            }
-            for (MoveableObject &movableObject : missile) {
-                drawObject(movableObject);
-                drawSolidObject(movableObject);
-            }
-            for (pair<MoveableObject, float> &movableObject : wheeldown) {
-                drawObject(movableObject.first);
-                drawSolidObject(movableObject.first);
-            }
-            for (pair<MoveableObject, float> &movableObject : wheelup) {
-                drawObject(movableObject.first);
-                drawSolidObject(movableObject.first);
-            }
-            for (MoveableObject &movableObject : wheelconst) {
-                drawObject(movableObject);
-                drawSolidObject(movableObject);
-            }
+            // drawObject(cannon);
+            // drawSolidObject(cannon);
+            // for (MoveableObject &movableObject : lifes) {
+            //     drawObject(movableObject);
+            //     drawSolidObject(movableObject);
+            // }
+            // for (MoveableObject &movableObject : planes) {
+            //     drawObject(movableObject);
+            //     drawSolidObject(movableObject);
+            // }
+            // for (MoveableObject &movableObject : rplanes) {
+            //     drawObject(movableObject);
+            //     drawSolidObject(movableObject);
+            // }
+            // for (MoveableObject &movableObject : debris) {
+            //     drawObject(movableObject);
+            //     drawSolidObject(movableObject);
+            // }
+            // for (MoveableObject &movableObject : bullets) {
+            //     drawObject(movableObject);
+            //     drawSolidObject(movableObject);
+            // }
+            // for (pair<MoveableObject, int> &movableObject : explosion) {
+            //     float middleX_explosion = movableObject.first.getWidth() / 2.0f;
+            //     float middleY_explosion = movableObject.first.getHeight() / 2.0f;
+            //     movableObject.first.selfDilate(middleX_explosion, middleY_explosion, 1.05);
+            //     drawObject(movableObject.first);
+            //     drawSolidObject(movableObject.first);
+            //     movableObject.second--;
+            // }
+            // for (MoveableObject &movableObject : missile) {
+            //     drawObject(movableObject);
+            //     drawSolidObject(movableObject);
+            // }
+            // for (pair<MoveableObject, float> &movableObject : wheeldown) {
+            //     drawObject(movableObject.first);
+            //     drawSolidObject(movableObject.first);
+            // }
+            // for (pair<MoveableObject, float> &movableObject : wheelup) {
+            //     drawObject(movableObject.first);
+            //     drawSolidObject(movableObject.first);
+            // }
+            // for (MoveableObject &movableObject : wheelconst) {
+            //     drawObject(movableObject);
+            //     drawSolidObject(movableObject);
+            // }
+            drawObject(moveHelicopter);
+            drawSolidObject(moveHelicopter);
 
             // move and rotate :/
             if (deg != 0) {
@@ -197,6 +205,7 @@ public:
             vector<pair<MoveableObject, float> > tmpwd; // wheel down
             vector<pair<MoveableObject, float> > tmpwu; // wheel up
             vector<MoveableObject> tmpwc; // wheel constant
+            moveHelicopter.move();
             for (int j=0;j<planes.size();++j) {
                 planes[j].move();
                 if(planes[j].outOfWindow(WINDOWHEIGHT, WINDOWWIDTH)){
