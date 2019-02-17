@@ -24,6 +24,7 @@ using namespace std;
 int deg = 0;
 int shoot = 0;
 bool keepreading;
+bool helicopterTop = true;
 
 void *readinput(void *threadid) {
     char c;
@@ -205,7 +206,23 @@ public:
             vector<pair<MoveableObject, float> > tmpwd; // wheel down
             vector<pair<MoveableObject, float> > tmpwu; // wheel up
             vector<MoveableObject> tmpwc; // wheel constant
+            
             moveHelicopter.move();
+            if(helicopterTop) {
+                if (moveHelicopter.getPos().getY() <= 20) {
+                    moveHelicopter.selfRotate(moveHelicopter.getRefPos().getX() + moveHelicopter.getWidth()/2,
+                        moveHelicopter.getRefPos().getY() + moveHelicopter.getHeight()/2, 180);
+                    moveHelicopter.setVector(0, 2);
+                    helicopterTop = false;
+                }               
+            } else {
+                if (moveHelicopter.getPos().getY() >= yend - 100) {
+                    moveHelicopter.selfRotate(moveHelicopter.getRefPos().getX() + moveHelicopter.getWidth()/2,
+                        moveHelicopter.getRefPos().getY() + moveHelicopter.getHeight()/2, 180);
+                    moveHelicopter.setVector(0, -2);
+                    helicopterTop = true;
+                }
+            }
             for (int j=0;j<planes.size();++j) {
                 planes[j].move();
                 if(planes[j].outOfWindow(WINDOWHEIGHT, WINDOWWIDTH)){
